@@ -1,0 +1,7 @@
+source ~/.podAliases/PodAliases
+
+alias "podLintITV"="pod spec lint --sources='https://github.com/ITV/iOS-Podspecs.git,https://github.com/CocoaPods/Specs'"
+alias generatePodAliases='swift ~/Dropbox/Mac_Utilities/Swift\ Scripts/GeneratePodAliases.swift'
+alias podDev='python3 ~/Dropbox/Mac_Utilities/Scripts/pod/SetupDevPod.py'
+alias podReinstall='python3 ~/Dropbox/Mac_Utilities/Scripts/pod/PodReinstall.py'
+alias podPushServices='pod repo push ITVPodspecs ITVServices.podspec --allow-warnings'

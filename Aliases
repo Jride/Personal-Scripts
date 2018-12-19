@@ -1,0 +1,11 @@
+WORKING_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null && pwd )"
+
+export PYTHON_SCRIPTS="$WORKING_DIR/Python Core Modules"
+export PYTHON_MODULES="$WORKING_DIR/Python Modules"
+export PYTHON_CORE_MODULES="$WORKING_DIR/Python Core Modules"
+export PYTHON_SUPPORTING_SCRIPTS="$WORKING_DIR/Supporting Scripts"
+
+for file in $WORKING_DIR/.profile.d/*
+do
+  source $file
+done

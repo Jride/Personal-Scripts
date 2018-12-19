@@ -1,0 +1,7 @@
+# GIT Aliases
+
+alias rmLocalBranches='sh ~/Dropbox/Mac_Utilities/Scripts/git/DeleteMergedBranches.sh'
+alias gitTag='sh ~/Dropbox/Mac_Utilities/Scripts/git/GitTagCreateAndPush.sh'
+alias gh='sh ~/Dropbox/Mac_Utilities/Scripts/git/OpenGithubPage.sh'
+alias ghpr='sh ~/Dropbox/Mac_Utilities/Scripts/git/OpenGithubPullRequest.sh'
+alias tagPod='python3 ~/Dropbox/Mac_Utilities/Scripts/git/TagPod.py'

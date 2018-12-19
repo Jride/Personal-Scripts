@@ -1,0 +1,49 @@
+# Text Editor
+e() { open -a TextEdit "$1"; }
+
+# Source Tree
+st() {
+
+if [ -z "$1" ]
+  then
+    open -a SourceTree ".";
+else
+  open -a SourceTree "$1";
+fi
+
+}
+
+# Shorthand version of "openx", use "ox" instead.
+ox() {
+  fileToOpen='';
+  for file in `find . -maxdepth 1 -name *.xcworkspace`; do
+      fileToOpen=$file
+  done
+
+  if [ -n "$fileToOpen" ]
+  then
+      echo $fileToOpen
+      open $fileToOpen
+  else
+      for file in `find . -maxdepth 1 -name *.xcodeproj`; do
+          fileToOpen=$file
+      done
+
+      if [ -n "$fileToOpen" ]
+      then
+          echo $fileToOpen
+          open $fileToOpen
+      else
+          echo "No xcode files to open."
+      fi
+  fi
+}
+
+simopenurl() {
+  if [ -z "$1" ]
+    then
+      echo "No deeplink url provided"
+  else
+    xcrun simctl openurl booted "$1";
+  fi
+}
