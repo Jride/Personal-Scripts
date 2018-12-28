@@ -1,0 +1,2 @@
+alias podgeneratealiases='python3 "$PYTHON_SCRIPTS/Cocoapods/GeneratePodAliases.py"'
+alias podlintitv='python3 "$PYTHON_SCRIPTS/Cocoapods/LintPodITV.py"'

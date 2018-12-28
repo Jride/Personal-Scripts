@@ -3,28 +3,22 @@ import os
 import socket
 import datetime
 
-home_dir = os.path.expanduser('~') + "/"
-# Getting access to our py utilities folder
-common_py_path = home_dir + "Dropbox/Mac_Utilities/Scripts/py_utilities"
-sys.path.insert(0, common_py_path)
+sys.path.append(os.path.expandvars('$ITV_PYTHON_CORE_MODULES'))
+sys.path.append(os.path.expandvars('$ITV_PYTHON_MODULES'))
+sys.path.append(os.path.expandvars('$PYTHON_SCRIPTS') + "/Cocoapods")
 
-from setupMacDefaults import setup_mac_defaults
-from utility_email import send_email
-from utility_terminal import shell_result
-from utility_terminal import shell_command
-from utility_filemanager import write_text_to_file
-from utility_filemanager import open_text_file
+import itv_shell
+import itv_argparser
+import itv_filesystem
+import SetupMacDefaults
+import GeneratePodAliases
 
 computer_name = socket.gethostname()
-generatePodAliases = home_dir + "Dropbox/Mac_Utilities/Swift\ Scripts/GeneratePodAliases.swift"
-
-swift = '/usr/bin/swift'
-
 new_updates = []
 
 def update_binary_if_needed(binary):
-    if shell_result("brew outdated " + binary):
-        results = shell_result("brew upgrade " + binary)
+    if itv_shell.result("brew outdated " + binary):
+        results = itv_shell.result("brew upgrade " + binary)
         updates = '''
 ---- Start Updating %s -----
 
@@ -35,46 +29,58 @@ def update_binary_if_needed(binary):
     ''' % (binary, results, binary)
         new_updates.append(updates)
 
-# MAIN SCRIPT
+### --- MAIN --- ###
+def run(args):
 
-# Setup the Mac Defaults
-setup_mac_defaults()
+    # Parse the arguments
+    parser = itv_argparser.parser(
+    os.path.dirname(__file__),
+    'Runs the daily login hook to update the brew packages amongst other things'
+    )
+    args = parser.parse_args(args)
 
-shell_command("pod repo update")
+    # Setup the Mac Defaults
+    SetupMacDefaults.run()
 
-# Update Podspec ENV variables
-shell_command(swift + " " + generatePodAliases)
+    itv_shell.run("pod repo update")
 
-# Update Homebrew
-shell_command("brew update")
+    # Update Podspec ENV variables
+    GeneratePodAliases.run()
 
-# cocoapod updates
-update_binary_if_needed("cocoapods")
+    # Update Homebrew
+    itv_shell.run("brew update")
 
-# swiftlint updates
-update_binary_if_needed("swiftlint")
+    # cocoapod updates
+    update_binary_if_needed("cocoapods")
 
-# git updates
-update_binary_if_needed("git")
+    # swiftlint updates
+    update_binary_if_needed("swiftlint")
 
-# If any new updates store the output to disk and send via email
-if new_updates:
-    now = datetime.datetime.now().strftime("%A %d %B %Y %H:%M")
-    update_on = "\nUPDATED ON %s\n" % (now)
-    new_updates.insert(0, update_on)
-    new_updates_txt = ''.join(new_updates)
-    # Store the updates via txt file
-    file_path = home_dir + "Documents/.packageUpdates/updates.txt"
-    write_text_to_file(new_updates_txt, file_path, "w+")
+    # git updates
+    update_binary_if_needed("git")
 
-    icon = "https://brew.sh/assets/img/homebrew-256x256.png"
-    title = "'Packages Updated!'"
-    message = "'Click here to see what has packages have been updated'"
-    action = home_dir + "Dropbox/Mac_Utilities/Scripts/login/OpenUpdateFile.sh"
+    # If any new updates store the output to disk and send via email
+    if new_updates:
+        now = datetime.datetime.now().strftime("%A %d %B %Y %H:%M")
+        update_on = "\nUPDATED ON %s\n" % (now)
+        new_updates.insert(0, update_on)
+        new_updates_txt = ''.join(new_updates)
+        # Store the updates via txt file
+        file_path = os.path.expandvars('$BREW_PACKAGE_UPDATES')
+        itv_filesystem.write_text_to_file(new_updates_txt, file_path, "w+")
 
-    shell_command("terminal-notifier -group 'homebrew-updates'"
-    + " -title " + title
-    + " -message " + message
-    + " -sound Glass"
-    + " -execute " + action
-    + " -appIcon " + icon)
+        icon = "https://brew.sh/assets/img/homebrew-256x256.png"
+        title = "'Packages Updated!'"
+        message = "'Click here to see what has packages have been updated'"
+        action = "'open -a TextEdit %s'" % file_path
+
+        itv_shell.run("terminal-notifier -group 'homebrew-updates'"
+        + " -title " + title
+        + " -message " + message
+        + " -sound Glass"
+        + " -execute " + action
+        + " -appIcon " + icon)
+
+if __name__ == "__main__":
+    arguments = sys.argv[1:]
+    run(arguments)

@@ -1,0 +1,3 @@
+alias gitdelmerged='python3 "$PYTHON_SCRIPTS/Git/DeleteMergedBranches.py"'
+alias gittag='python3 "$PYTHON_SCRIPTS/Git/CreateTagAndPush.py"'
+alias gitfeature='python3 "$PYTHON_SCRIPTS/Git/NewFeatureBranch.py"'

@@ -1,0 +1,1 @@
+alias scriptslist='python3 "$PYTHON_SCRIPTS/Help/ListScriptAliases.py"'

@@ -1,0 +1,2 @@
+alias st='python3 "$PYTHON_SCRIPTS/Applications/OpenSourceTree.py"'
+alias e='python3 "$PYTHON_SCRIPTS/Applications/OpenTextEditor.py"'

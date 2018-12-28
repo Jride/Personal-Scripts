@@ -1,0 +1,2 @@
+alias loginhook='python3 "$PYTHON_SCRIPTS/login/loginHook.py"'
+alias setmacdefaults='python3 "$PYTHON_SCRIPTS/login/setupMacDefaults.py"'
