@@ -8,11 +8,11 @@ sys.path.append(os.path.expandvars('$ITV_PYTHON_MODULES'))
 
 import itv_shell
 import itv_logger
-import itv_util
+import itv_string_utils
 import itv_argparser
 
 def find_alias(line):
-    return itv_util.find_between_str("alias ", "=", line)
+    return itv_string_utils.find_between_str("alias ", "=", line)
 
 # Returns the parent directories name for the provided path
 # /path/to/my/file.ext => my
@@ -57,48 +57,42 @@ def print_dictionary_values(dict):
     print_column_data(col_data)
 
 ### --- MAIN --- ###
-def run(args):
 
-    # Parse the arguments
-    parser = itv_argparser.parser(
-    os.path.dirname(__file__),
-    '''
-    This script provides you with a list of all aliases for your Script repository
-    separated by category. It can be quite useful when there is large resource of
-    scripts and you forget how to call them and what they are for.
-    '''
-    )
-    args = parser.parse_args(args)
+parser = itv_argparser.parser(
+os.path.dirname(__file__),
+'''
+This script provides you with a list of all aliases for your Script repository
+separated by category. It can be quite useful when there is large resource of
+scripts and you forget how to call them and what they are for.
+'''
+)
+args = parser.parse_args(sys.argv[1:])
 
-    data = {}
+data = {}
 
-    # Recursively finds all the alias files located in the Python Scripts folder
-    itv_logger.print_verbose("Aliases found in python scripts folder ---->")
-    for filename in glob.glob(os.path.expandvars('$PYTHON_SCRIPTS') + "/**/alias", recursive=True):
-        itv_logger.print_verbose(filename)
-        category = parent_dir_for_path(filename)
-        data[category] = []
+# Recursively finds all the alias files located in the Python Scripts folder
+itv_logger.print_verbose("Aliases found in python scripts folder ---->")
+for filename in glob.glob(os.path.expandvars('$PYTHON_SCRIPTS') + "/**/alias", recursive=True):
+    itv_logger.print_verbose(filename)
+    category = parent_dir_for_path(filename)
+    data[category] = []
 
-        alias = open(filename)
-        for line in alias:
-            if "alias" in line:
-                data[category].append(find_alias(line))
+    alias = open(filename)
+    for line in alias:
+        if "alias" in line:
+            data[category].append(find_alias(line))
 
-    script_categories = list(data.keys())
-    options = ["All"] + script_categories
-    choice = itv_shell.choose_from_list("Select a script category", options)
+script_categories = list(data.keys())
+options = ["All"] + script_categories
+choice = itv_shell.choose_from_list("Select a script category", options)
 
-    if choice == 0:
-        print("********  All Scripts  ********")
-        print_dictionary_values(data)
-    else:
-        chosen_category = script_categories[choice-1]
-        print("********  %s Scripts ********" % chosen_category)
-        arr = make_column_data(3, data[chosen_category])
-        print_column_data(arr)
+if choice == 0:
+    print("********  All Scripts  ********")
+    print_dictionary_values(data)
+else:
+    chosen_category = script_categories[choice-1]
+    print("********  %s Scripts ********" % chosen_category)
+    arr = make_column_data(3, data[chosen_category])
+    print_column_data(arr)
 
-    print("")
-
-if __name__ == "__main__":
-    arguments = sys.argv[1:]
-    run(arguments)
+print("")

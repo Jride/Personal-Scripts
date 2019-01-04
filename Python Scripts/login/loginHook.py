@@ -5,13 +5,13 @@ import datetime
 
 sys.path.append(os.path.expandvars('$ITV_PYTHON_CORE_MODULES'))
 sys.path.append(os.path.expandvars('$ITV_PYTHON_MODULES'))
-sys.path.append(os.path.expandvars('$PYTHON_SCRIPTS') + "/Cocoapods")
+sys.path.append(os.path.expandvars('$PYTHON_MODULES'))
 
 import itv_shell
 import itv_argparser
 import itv_filesystem
+import cocoapods
 import SetupMacDefaults
-import GeneratePodAliases
 
 computer_name = socket.gethostname()
 new_updates = []
@@ -45,7 +45,7 @@ def run(args):
     itv_shell.run("pod repo update")
 
     # Update Podspec ENV variables
-    GeneratePodAliases.run()
+    cocoapods.generate_pod_aliases()
 
     # Update Homebrew
     itv_shell.run("brew update")
@@ -58,6 +58,9 @@ def run(args):
 
     # git updates
     update_binary_if_needed("git")
+
+    # marathon for editing swift scripts
+    update_binary_if_needed("")
 
     # If any new updates store the output to disk and send via email
     if new_updates:
