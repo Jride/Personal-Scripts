@@ -1,0 +1,1 @@
+alias usedevscripts='python3 "$PYTHON_SCRIPTS/Misc/UseDevScripts.py"'
