@@ -21,3 +21,5 @@ done < <(find "$PYTHON_SCRIPTS" -name "alias")
 source "$WORKING_DIR/.bash_it/load_bash_it"
 
 alias usedevscripts='source "$DEV_SCRIPTS/Aliases"; source "$ITV_DEV_SCRIPTS/Aliases"'
+alias uselivescripts='source "$SCRIPTS/Aliases"; source "$ITV_SCRIPTS/Aliases"'
+
