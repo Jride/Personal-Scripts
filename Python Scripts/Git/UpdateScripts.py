@@ -25,8 +25,12 @@ Updates the itv and josh scripts
 )
 args = parser.parse_args(sys.argv[1:])
 
-itv_shell.run('cd "%s"' % os.path.expandvars('$SCRIPTS'))
+current_dir = itv_shell.result("pwd")
+
+os.chdir(os.path.expandvars('$SCRIPTS'))
 update_repo()
 
-itv_shell.run('cd "%s"' % os.path.expandvars('$ITV_SCRIPTS'))
+os.chdir(os.path.expandvars('$ITV_SCRIPTS'))
 update_repo()
+
+os.chdir(current_dir)
