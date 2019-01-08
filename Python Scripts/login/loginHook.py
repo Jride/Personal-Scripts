@@ -11,7 +11,7 @@ import itv_shell
 import itv_argparser
 import itv_filesystem
 import cocoapods
-import SetupMacDefaults
+import mac_utils
 
 computer_name = socket.gethostname()
 new_updates = []
@@ -30,60 +30,57 @@ def update_binary_if_needed(binary):
         new_updates.append(updates)
 
 ### --- MAIN --- ###
-def run(args):
 
-    # Parse the arguments
-    parser = itv_argparser.parser(
-    os.path.dirname(__file__),
-    'Runs the daily login hook to update the brew packages amongst other things'
-    )
-    args = parser.parse_args(args)
+args = sys.argv[1:]
 
-    # Setup the Mac Defaults
-    SetupMacDefaults.run()
+# Parse the arguments
+parser = itv_argparser.parser(
+os.path.dirname(__file__),
+'Runs the daily login hook to update the brew packages amongst other things'
+)
+args = parser.parse_args(args)
 
-    itv_shell.run("pod repo update")
+# Setup the Mac Defaults
+mac_utils.setup_defaults()
 
-    # Update Podspec ENV variables
-    cocoapods.generate_pod_aliases()
+itv_shell.run("pod repo update")
 
-    # Update Homebrew
-    itv_shell.run("brew update")
+# Update Podspec ENV variables
+cocoapods.generate_pod_aliases()
 
-    # cocoapod updates
-    update_binary_if_needed("cocoapods")
+# Update Homebrew
+itv_shell.run("brew update")
 
-    # swiftlint updates
-    update_binary_if_needed("swiftlint")
+# cocoapod updates
+update_binary_if_needed("cocoapods")
 
-    # git updates
-    update_binary_if_needed("git")
+# swiftlint updates
+update_binary_if_needed("swiftlint")
 
-    # marathon for editing swift scripts
-    update_binary_if_needed("")
+# git updates
+update_binary_if_needed("git")
 
-    # If any new updates store the output to disk and send via email
-    if new_updates:
-        now = datetime.datetime.now().strftime("%A %d %B %Y %H:%M")
-        update_on = "\nUPDATED ON %s\n" % (now)
-        new_updates.insert(0, update_on)
-        new_updates_txt = ''.join(new_updates)
-        # Store the updates via txt file
-        file_path = os.path.expandvars('$BREW_PACKAGE_UPDATES')
-        itv_filesystem.write_text_to_file(new_updates_txt, file_path, "w+")
+# marathon for editing swift scripts
+update_binary_if_needed("")
 
-        icon = "https://brew.sh/assets/img/homebrew-256x256.png"
-        title = "'Packages Updated!'"
-        message = "'Click here to see what has packages have been updated'"
-        action = "'open -a TextEdit %s'" % file_path
+# If any new updates store the output to disk and send via email
+if new_updates:
+    now = datetime.datetime.now().strftime("%A %d %B %Y %H:%M")
+    update_on = "\nUPDATED ON %s\n" % (now)
+    new_updates.insert(0, update_on)
+    new_updates_txt = ''.join(new_updates)
+    # Store the updates via txt file
+    file_path = os.path.expandvars('$BREW_PACKAGE_UPDATES')
+    itv_filesystem.write_text_to_file(new_updates_txt, file_path, "w+")
 
-        itv_shell.run("terminal-notifier -group 'homebrew-updates'"
-        + " -title " + title
-        + " -message " + message
-        + " -sound Glass"
-        + " -execute " + action
-        + " -appIcon " + icon)
+    icon = "https://brew.sh/assets/img/homebrew-256x256.png"
+    title = "'Packages Updated!'"
+    message = "'Click here to see what has packages have been updated'"
+    action = "'open -a TextEdit %s'" % file_path
 
-if __name__ == "__main__":
-    arguments = sys.argv[1:]
-    run(arguments)
+    itv_shell.run("terminal-notifier -group 'homebrew-updates'"
+    + " -title " + title
+    + " -message " + message
+    + " -sound Glass"
+    + " -execute " + action
+    + " -appIcon " + icon)
