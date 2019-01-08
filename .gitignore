@@ -103,4 +103,4 @@ venv.bak/
 # mypy
 .mypy_cache/
 
-!.bash_it/
+!.bash_it/*
