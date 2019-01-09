@@ -13,7 +13,6 @@ import itv_filesystem
 import cocoapods
 import mac_utils
 
-computer_name = socket.gethostname()
 new_updates = []
 
 def update_binary_if_needed(binary):
