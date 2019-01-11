@@ -12,6 +12,7 @@ import itv_argparser
 import itv_filesystem
 import cocoapods
 import mac_utils
+import script_utils
 
 new_updates = []
 
@@ -47,6 +48,10 @@ itv_shell.run("pod repo update")
 # Update Podspec ENV variables
 cocoapods.generate_pod_aliases()
 
+# Clone / Update the scripts
+script_utils.clone_scripts_if_needed()
+script_utils.update_scripts()
+
 # Update Homebrew
 itv_shell.run("brew update")
 
@@ -60,7 +65,7 @@ update_binary_if_needed("swiftlint")
 update_binary_if_needed("git")
 
 # marathon for editing swift scripts
-update_binary_if_needed("")
+# update_binary_if_needed("")
 
 # If any new updates store the output to disk and send via email
 if new_updates:
