@@ -49,7 +49,6 @@ itv_shell.run("pod repo update")
 cocoapods.generate_pod_aliases()
 
 # Clone / Update the scripts
-script_utils.clone_scripts_if_needed()
 script_utils.update_scripts()
 
 # Update Homebrew

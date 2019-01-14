@@ -1,0 +1,2 @@
+alias profileedit='atom ~/.bash_profile'
+alias profilereload='source ~/.bash_profile'

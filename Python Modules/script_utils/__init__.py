@@ -31,15 +31,3 @@ def update_scripts():
     update_repo()
 
     os.chdir(current_dir)
-
-def clone_scripts_if_needed():
-    
-    if not os.path.exists(scripts_path) or not os.listdir(scripts_path):
-        print("Personal Scripts Not Found")
-        print("Checking our from repo...")
-        itv_shell.run('git clone %s' % scripts_repo)
-
-    if not os.path.exists(itv_scripts_path) or not os.listdir(itv_scripts_path):
-        print("ITV Scripts Not Found")
-        print("Checking our from repo...")
-        itv_shell.run('git clone %s' % itv_scripts_repo)

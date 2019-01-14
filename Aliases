@@ -5,6 +5,7 @@ export PYTHON_MODULES="$WORKING_DIR/Python Modules"
 export PYTHON_CORE_MODULES="$WORKING_DIR/Python Core Modules"
 export PYTHON_SUPPORTING_SCRIPTS="$WORKING_DIR/Supporting Scripts"
 
+# The location where we store updates made by the login script
 export BREW_PACKAGE_UPDATES="$HOME/Documents/.packageUpdates/updates.txt"
 
 for file in $WORKING_DIR/.profile.d/*
@@ -17,11 +18,8 @@ do
   source "$alias"
 done < <(find "$PYTHON_SCRIPTS" -name "alias")
 
-# Load BASH IT terminal customization
+# Load BASH IT terminal customisation
 source "$WORKING_DIR/.bash_it/load_bash_it"
 
-alias usedevscripts='source "$DEV_SCRIPTS/Aliases"; source "$ITV_DEV_SCRIPTS/Aliases"'
-alias uselivescripts='source "$SCRIPTS/Aliases"; source "$ITV_SCRIPTS/Aliases"'
-
-alias editscripts='atom "$DEV_SCRIPTS"'
-alias edititvscripts='atom "$ITV_DEV_SCRIPTS"'
+# Pod project aliases
+source ~/.podAliases/PodAliases
