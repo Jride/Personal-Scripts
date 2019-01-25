@@ -5,6 +5,7 @@ sys.path.append(os.path.expandvars('$ITV_PYTHON_CORE_MODULES'))
 sys.path.append(os.path.expandvars('$ITV_PYTHON_MODULES'))
 
 import itv_shell
+import itv_argparser
 
 ### --- MAIN --- ###
 
@@ -42,9 +43,9 @@ file.write('''
     <key>StartCalendarInterval</key>
     <dict>
         <key>Hour</key>
-        <integer>09</integer>
+        <integer>9</integer>
         <key>Minute</key>
-        <integer>00</integer>
+        <integer>0</integer>
     </dict>
     <key>StandardOutPath</key>
     <string>/tmp/loginHook.stdout</string>
