@@ -34,8 +34,11 @@ file.write('''
     </dict>
     <key>Label</key>
     <string>com.loginHook</string>
-    <key>Program</key>
-    <string>%s</string>
+    <key>ProgramArguments</key>
+    <array>
+        <string>/usr/local/bin/python3</string>
+        <string>/Users/joshrideout/Documents/.packageUpdates/loginHook.sh</string>
+    </array>
     <key>RunAtLoad</key>
     <true/>
     <key>KeepAlive</key>
@@ -53,7 +56,7 @@ file.write('''
     <string>/tmp/loginHook.stderr</string>
   </dict>
 </plist>
-''' % (login_hook_script))
+''')
 file.close()
 
 itv_shell.run("launchctl unload " + launch_agent_location + file_name)
