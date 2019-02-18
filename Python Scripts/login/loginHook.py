@@ -62,6 +62,7 @@ update_binary_if_needed("swiftlint")
 
 # git updates
 update_binary_if_needed("git")
+update_binary_if_needed("git-lfs")
 
 # marathon for editing swift scripts
 # update_binary_if_needed("")
