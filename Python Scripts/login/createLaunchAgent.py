@@ -37,7 +37,7 @@ file.write('''
     <key>ProgramArguments</key>
     <array>
         <string>/usr/local/bin/python3</string>
-        <string>/Users/joshrideout/Documents/.packageUpdates/loginHookAlias.sh</string>
+        <string>/Users/joshrideout/Documents/.packageUpdates/loginHookAlias.py</string>
     </array>
     <key>RunAtLoad</key>
     <true/>
