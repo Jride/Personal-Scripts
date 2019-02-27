@@ -1,5 +1,5 @@
 alias usedevscripts='source "$DEV_SCRIPTS/Aliases"; source "$ITV_DEV_SCRIPTS/Aliases"'
 alias uselivescripts='source "$SCRIPTS/Aliases"; source "$ITV_SCRIPTS/Aliases"'
 
-alias editscripts='atom "$DEV_SCRIPTS"'
-alias edititvscripts='atom "$ITV_DEV_SCRIPTS"'
+alias editscripts='atom "$DEV_SCRIPTS" && cd "$DEV_SCRIPTS"'
+alias edititvscripts='atom "$ITV_DEV_SCRIPTS" && cd "$ITV_DEV_SCRIPTS"'
