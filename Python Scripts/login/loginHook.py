@@ -54,6 +54,9 @@ script_utils.update_scripts()
 # Update Homebrew
 itv_shell.run("brew update")
 
+# Install the sublime binary
+itv_shell.run("ln -s /Applications/Sublime\ Text.app/Contents/SharedSupport/bin/subl /usr/local/bin/subl")
+
 # cocoapod updates
 update_binary_if_needed("cocoapods")
 
