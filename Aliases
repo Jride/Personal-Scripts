@@ -13,9 +13,7 @@ do
   source "$file"
 done
 
-find "$PYTHON_SCRIPTS" -name "alias" | while read -r alias; do
-  source "$alias"
-done
+eval "$(find "$PYTHON_SCRIPTS" -name "alias" | while read af; do echo "source '$af'"; done)"
 
 # Load BASH IT terminal customisation
 source "$WORKING_DIR/.bash_it/load_bash_it"
