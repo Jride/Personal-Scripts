@@ -34,8 +34,11 @@ file.write('''
     </dict>
     <key>Label</key>
     <string>com.loginHook</string>
-    <key>Program</key>
-    <string>%s</string>
+    <key>ProgramArguments</key>
+    <array>
+        <string>/bin/bash</string>
+        <string>%s</string>
+    </array>
     <key>RunAtLoad</key>
     <true/>
     <key>KeepAlive</key>
