@@ -3,9 +3,16 @@ import os
 import socket
 import datetime
 
-sys.path.append(os.path.expandvars('$ITV_PYTHON_CORE_MODULES'))
-sys.path.append(os.path.expandvars('$ITV_PYTHON_MODULES'))
-sys.path.append(os.path.expandvars('$PYTHON_MODULES'))
+arguments = sys.argv[1:]
+count = len(arguments)
+
+if len(arguments) > 0:
+    for x in sys.arg:
+        sys.path.append(x)
+else:
+    sys.path.append(os.path.expandvars('$ITV_PYTHON_CORE_MODULES'))
+    sys.path.append(os.path.expandvars('$ITV_PYTHON_MODULES'))
+    sys.path.append(os.path.expandvars('$PYTHON_MODULES'))
 
 import itv_shell
 import itv_argparser
