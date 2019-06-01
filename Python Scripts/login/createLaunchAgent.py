@@ -19,7 +19,7 @@ home_dir = os.path.expanduser('~') + "/"
 launch_agent_location = home_dir + "Library/LaunchAgents/"
 file_name = "com.loginHook.plist"
 
-login_hook_script = home_dir + "login/loginHook.sh"
+login_hook_script = home_dir + "Documents/.packageUpdates/loginHook.sh"
 
 file = open(launch_agent_location + file_name, "w+")
 file.write('''
