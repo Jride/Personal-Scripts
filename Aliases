@@ -1,4 +1,4 @@
-WORKING_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null && pwd )"
+WORKING_DIR="$( dirname "${BASH_SOURCE[0]}")"
 
 export PYTHON_SCRIPTS="$WORKING_DIR/Python Scripts"
 export PYTHON_MODULES="$WORKING_DIR/Python Modules"

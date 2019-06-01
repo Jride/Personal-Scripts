@@ -4,10 +4,9 @@ import socket
 import datetime
 
 arguments = sys.argv[1:]
-count = len(arguments)
 
 if len(arguments) > 0:
-    for x in sys.arg:
+    for x in arguments:
         sys.path.append(x)
 else:
     sys.path.append(os.path.expandvars('$ITV_PYTHON_CORE_MODULES'))
@@ -37,15 +36,6 @@ def update_binary_if_needed(binary):
         new_updates.append(updates)
 
 ### --- MAIN --- ###
-
-args = sys.argv[1:]
-
-# Parse the arguments
-parser = itv_argparser.parser(
-os.path.dirname(__file__),
-'Runs the daily login hook to update the brew packages amongst other things'
-)
-args = parser.parse_args(args)
 
 # Setup the Mac Defaults
 mac_utils.setup_defaults()
