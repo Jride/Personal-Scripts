@@ -1,3 +1,5 @@
 #!/bin/bash
 
-python3 ~/Dropbox/Mac_Utilities/Scripts/login/loginHook.py
+source ~/.bash_profile
+
+# python3 "$PYTHON_SCRIPTS/login/loginHook.py"
