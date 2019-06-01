@@ -19,7 +19,7 @@ home_dir = os.path.expanduser('~') + "/"
 launch_agent_location = home_dir + "Library/LaunchAgents/"
 file_name = "com.loginHook.plist"
 
-login_hook_script = os.path.expandvars('$PYTHON_SCRIPTS') + "/login/loginHook.sh"
+login_hook_script = home_dir + "/login/loginHook.sh"
 
 file = open(launch_agent_location + file_name, "w+")
 file.write('''
@@ -34,11 +34,8 @@ file.write('''
     </dict>
     <key>Label</key>
     <string>com.loginHook</string>
-    <key>ProgramArguments</key>
-    <array>
-        <string>/usr/local/bin/python3</string>
-        <string>/Users/joshrideout/Documents/.packageUpdates/loginHookAlias.py</string>
-    </array>
+    <key>Program</key>
+    <string>%s</string>
     <key>RunAtLoad</key>
     <true/>
     <key>KeepAlive</key>
@@ -46,9 +43,9 @@ file.write('''
     <key>StartCalendarInterval</key>
     <dict>
         <key>Hour</key>
-        <integer>9</integer>
+        <integer>09</integer>
         <key>Minute</key>
-        <integer>0</integer>
+        <integer>00</integer>
     </dict>
     <key>StandardOutPath</key>
     <string>/tmp/loginHook.stdout</string>
@@ -56,7 +53,7 @@ file.write('''
     <string>/tmp/loginHook.stderr</string>
   </dict>
 </plist>
-''')
+''' % (login_hook_script))
 file.close()
 
 itv_shell.run("launchctl unload " + launch_agent_location + file_name)
