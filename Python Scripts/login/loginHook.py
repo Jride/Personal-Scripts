@@ -3,15 +3,9 @@ import os
 import socket
 import datetime
 
-arguments = sys.argv[1:]
-
-if len(arguments) > 0:
-    for x in arguments:
-        sys.path.append(x)
-else:
-    sys.path.append(os.path.expandvars('$ITV_PYTHON_CORE_MODULES'))
-    sys.path.append(os.path.expandvars('$ITV_PYTHON_MODULES'))
-    sys.path.append(os.path.expandvars('$PYTHON_MODULES'))
+sys.path.append(os.path.expandvars('$ITV_PYTHON_CORE_MODULES'))
+sys.path.append(os.path.expandvars('$ITV_PYTHON_MODULES'))
+sys.path.append(os.path.expandvars('$PYTHON_MODULES'))
 
 import itv_shell
 import itv_argparser
@@ -50,9 +44,6 @@ script_utils.update_scripts()
 
 # Update Homebrew
 itv_shell.run("brew update")
-
-# Install the sublime binary
-itv_shell.run("ln -s /Applications/Sublime\ Text.app/Contents/SharedSupport/bin/subl /usr/local/bin/subl")
 
 # cocoapod updates
 update_binary_if_needed("cocoapods")

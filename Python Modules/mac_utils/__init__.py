@@ -23,9 +23,13 @@ def setup_defaults():
     # Stop Textedit and other iCloud enabled apps from defaulting to save in iCloud
     itv_shell.run("defaults write NSGlobalDomain NSDocumentSaveNewDocumentsToCloud -bool false")
 
+
+    # Set the default for the iOS Simulator to not use the hardware keyboard
+    itv_shell.run("defaults write com.apple.iphonesimulator ConnectHardwareKeyboard 0")
+    
     # Install sourcetree command line tools
     print("*** Copying sourcetree command line tools ***")
     itv_shell.run("cp /Applications/SourceTree.app/Contents/Resources/stree /usr/local/bin")
 
-    # Set the default for the iOS Simulator to not use the hardware keyboard
-    itv_shell.run("defaults write com.apple.iphonesimulator ConnectHardwareKeyboard 0")
+    # Install the sublime binary
+    itv_shell.run("ln -s /Applications/Sublime\ Text.app/Contents/SharedSupport/bin/subl /usr/local/bin/subl")
