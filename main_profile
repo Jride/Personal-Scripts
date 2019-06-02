@@ -1,3 +1,19 @@
+# This is the main profile. Create a ~/.bash_profile file and add the following:
+
+# Content of ~/.bash_profile
+
+# export SCRIPTS="/Users/joshrideout/.scripts/josh"
+# export ITV_SCRIPTS="/Users/joshrideout/.scripts/itv"
+
+# export DEV_SCRIPTS="/Users/joshrideout/Documents/Scripts"
+# export ITV_DEV_SCRIPTS="/Users/joshrideout/Documents/ITVScripts"
+
+####  LOAD THE MAIN PROFILE ONLY  #####
+
+# source "$SCRIPTS/main_profile"
+
+######################################################################
+
 # Adding fastlane to home path
 export PATH="$HOME/.fastlane/bin:$PATH"
 
