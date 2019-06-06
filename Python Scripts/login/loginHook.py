@@ -45,6 +45,9 @@ script_utils.update_scripts()
 # Update Homebrew
 itv_shell.run("brew update")
 
+# update rbenv
+update_binary_if_needed("rbenv")
+
 # cocoapod updates
 update_binary_if_needed("cocoapods")
 
