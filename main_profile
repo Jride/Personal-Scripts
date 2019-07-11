@@ -16,6 +16,7 @@
 
 # Adding fastlane to home path
 export PATH="$HOME/.fastlane/bin:$PATH"
+export PATH="$HOME/.rbenv/bin:$PATH"
 
 # Load our custom profiles for ITV team scripts and personal scripts
 source "$SCRIPTS/Aliases"
