@@ -34,6 +34,9 @@ def update_binary_if_needed(binary):
 # Setup the Mac Defaults
 mac_utils.setup_defaults()
 
+# Update cocoapods installed via gem
+itv_shell.run("gem install cocoapods")
+
 itv_shell.run("pod repo update")
 
 # Update Podspec ENV variables
@@ -47,9 +50,6 @@ itv_shell.run("brew update")
 
 # update rbenv
 update_binary_if_needed("rbenv")
-
-# cocoapod updates
-update_binary_if_needed("cocoapods")
 
 # swiftlint updates
 update_binary_if_needed("swiftlint")
