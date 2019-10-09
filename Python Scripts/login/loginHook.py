@@ -34,11 +34,6 @@ def update_binary_if_needed(binary):
 # Setup the Mac Defaults
 mac_utils.setup_defaults()
 
-# Update cocoapods installed via gem
-itv_shell.run("gem install cocoapods")
-
-itv_shell.run("pod repo update")
-
 # Update Podspec ENV variables
 cocoapods.generate_pod_aliases()
 
@@ -47,6 +42,9 @@ script_utils.update_scripts()
 
 # Update Homebrew
 itv_shell.run("brew update")
+
+# update rbenv
+update_binary_if_needed("cocoapods")
 
 # update rbenv
 update_binary_if_needed("rbenv")
@@ -60,6 +58,8 @@ update_binary_if_needed("git-lfs")
 
 # marathon for editing swift scripts
 # update_binary_if_needed("")
+
+itv_shell.run("pod repo update")
 
 # If any new updates store the output to disk and send via email
 if new_updates:
