@@ -82,10 +82,10 @@ prompt() {
     # nice prompt
     case "`id -u`" in
         0) PS1="${TITLEBAR}┌─$(my_ve)$(chroot)$(modern_scm_prompt)$(__my_rvm_ruby_version)[${cyan}\w${normal}]$(is_vim_shell)
-└─▪ "
+└─▪ $USING_DEV_SCRIPTS"
         ;;
         *) PS1="${TITLEBAR}┌─$(my_ve)$(chroot)$(modern_scm_prompt)$(__my_rvm_ruby_version)[${cyan}\w${normal}]$(is_vim_shell)
-└─▪ "
+└─▪ $USING_DEV_SCRIPTS"
         ;;
     esac
 }
