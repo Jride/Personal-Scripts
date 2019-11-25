@@ -1,0 +1,2 @@
+alias fire='python3 "$PYTHON_SCRIPTS/Animations/Fire.py"'
+alias matrix='python3 "$PYTHON_SCRIPTS/Animations/Matrix.py"'
