@@ -21,7 +21,7 @@ WINDOW_SIZE = 25
 WINDOW_ANIMATION_SPEED = 3
 FPS = 25
 SLEEP_MILLIS = 1.0/FPS
-USE_COLORS = False
+USE_COLORS = True
 SCREENSAVER_MODE = True
 MATRIX_CODE_CHARS = "ɀɁɂŧϢϣϤϥϦϧϨϫϬϭϮϯϰϱϢϣϤϥϦϧϨϩϪϫϬϭϮϯϰ߃߄༣༤༥༦༧༩༪༫༬༭༮༯༰༱༲༳༶"
 
