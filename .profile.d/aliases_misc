@@ -1,2 +1,7 @@
+# Preferred editor to use to edit files. Change this here and all other
+# alias / scripts will use the updated editor.
+alias edit='subl'
+
 alias profileedit='edit ~/.bash_profile'
 alias profilereload='source ~/.bash_profile'
+alias ip='ipconfig getifaddr en0'
