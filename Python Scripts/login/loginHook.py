@@ -52,6 +52,9 @@ update_binary_if_needed("rbenv")
 # swiftlint updates
 update_binary_if_needed("swiftlint")
 
+# carthage updates
+update_binary_if_needed("carthage")
+
 # git updates
 update_binary_if_needed("git")
 update_binary_if_needed("git-lfs")
