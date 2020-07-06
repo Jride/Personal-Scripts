@@ -29,3 +29,7 @@ if which rbenv > /dev/null; then eval "$(rbenv init -)"; fi
 export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+
+export HOCKEY_UPLOAD_USERNAME="candyspace"
+export HOCKEY_UPLOAD_PASSWORD="c4ndyup104dmg3r"
+export HOCKEY_SERVER="apps.candyspace.com"
