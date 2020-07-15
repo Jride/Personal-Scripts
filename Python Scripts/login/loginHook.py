@@ -14,9 +14,10 @@ import cocoapods
 import mac_utils
 import script_utils
 
+outdated_gems = []
 new_updates = []
 
-def update_binary_if_needed(binary):
+def update_brew_binary_if_needed(binary):
     if itv_shell.result("brew outdated " + binary):
         results = itv_shell.result("brew upgrade " + binary)
         updates = '''
@@ -28,6 +29,20 @@ def update_binary_if_needed(binary):
 
     ''' % (binary, results, binary)
         new_updates.append(updates)
+
+def update_gem_dependency_if_needed(dependency):
+    for gem in outdated_gems:
+        if dependency in gem:
+            results = itv_shell.result("gem update " + dependency)
+            updates = '''
+---- Start Updating %s -----
+
+%s
+
+---- Finished Updating %s -----
+
+    ''' % (dependency, results, dependency)
+            new_updates.append(updates)
 
 ### --- MAIN --- ###
 
@@ -43,24 +58,21 @@ script_utils.update_scripts()
 # Update Homebrew
 itv_shell.run("brew update")
 
-# update rbenv
-update_binary_if_needed("cocoapods")
+# Homebrew updates
 
-# update rbenv
-update_binary_if_needed("rbenv")
+update_brew_binary_if_needed("rbenv")
+update_brew_binary_if_needed("swiftlint")
+update_brew_binary_if_needed("carthage")
+update_brew_binary_if_needed("git")
+update_brew_binary_if_needed("git-lfs")
 
-# swiftlint updates
-update_binary_if_needed("swiftlint")
+# Update Gem Libraries
+outdated_gems_result = itv_shell.result("gem outdated")
+outdated_gems = outdated_gems_result.splitlines()
 
-# carthage updates
-update_binary_if_needed("carthage")
-
-# git updates
-update_binary_if_needed("git")
-update_binary_if_needed("git-lfs")
-
-# marathon for editing swift scripts
-# update_binary_if_needed("")
+update_gem_dependency_if_needed("fastlane")
+update_gem_dependency_if_needed("cocoapods")
+update_gem_dependency_if_needed("cocoapods-rome")
 
 itv_shell.run("pod repo update")
 
