@@ -30,18 +30,18 @@ def update_brew_binary_if_needed(binary):
     ''' % (binary, results, binary)
         new_updates.append(updates)
 
-def update_gem_dependency_if_needed(dependency):
-    for gem in outdated_gems:
-        if dependency in gem:
-            results = itv_shell.result("gem update " + dependency)
+def update_gem_dependency_if_needed(gem_to_update):
+    for outdated_gem in outdated_gems:
+        if outdated_gem == gem_to_update:
+            results = itv_shell.result("gem update " + gem_to_update)
             updates = '''
----- Start Updating %s -----
+---- Start Updating Gem: %s -----
 
 %s
 
----- Finished Updating %s -----
+---- Finished Updating Gem: %s -----
 
-    ''' % (dependency, results, dependency)
+    ''' % (gem_to_update, results, gem_to_update)
             new_updates.append(updates)
 
 ### --- MAIN --- ###
@@ -68,7 +68,10 @@ update_brew_binary_if_needed("git-lfs")
 
 # Update Gem Libraries
 outdated_gems_result = itv_shell.result("gem outdated")
-outdated_gems = outdated_gems_result.splitlines()
+outdated_gems_list = outdated_gems_result.splitlines()
+for gem in outdated_gems_list:
+    split_gem = gem.split(" ")
+    outdated_gems.append(split_gem[0])
 
 update_gem_dependency_if_needed("fastlane")
 update_gem_dependency_if_needed("cocoapods")
