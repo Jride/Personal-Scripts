@@ -36,3 +36,8 @@ export NVM_DIR="$HOME/.nvm"
 export HOCKEY_UPLOAD_USERNAME="candyspace"
 export HOCKEY_UPLOAD_PASSWORD="c4ndyup104dmg3r"
 export HOCKEY_SERVER="apps.candyspace.com"
+
+export MATCH_KEYCHAIN_PASSWORD="q8JEqsJqBLvDXgCu"
+export BASH_SILENCE_DEPRECATION_WARNING=1
+
+export APPLE_ID="josh.rideout@candyspace.com"
