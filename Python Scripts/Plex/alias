@@ -1,0 +1,3 @@
+alias addMedia='python3 "$PYTHON_SCRIPTS/Plex/AddMedia.py"'
+alias checkNewEpisodes='python3 "$PYTHON_SCRIPTS/Plex/CheckForNewEpisodes.py"'
+alias processTorrents='python3 "$PYTHON_SCRIPTS/Plex/ProcessCompletedTorrents.py"'
