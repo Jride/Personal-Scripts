@@ -131,7 +131,7 @@ def move_file(source, destination):
 
 def create_folder(folder):
     print("Creating Folder: " + folder)
-    itv_shell.run("mkdir '%s' '%s'" % (folder))
+    itv_shell.run("mkdir '%s'" % (folder))
 
 ### --- MAIN --- ###
 parser = itv_argparser.parser(
