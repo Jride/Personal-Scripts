@@ -69,11 +69,11 @@ def result(command):
 
 def remove_torrent(identifier):
     print("Removing torrent: " + identifier)
-    # itv_shell.run("transmission-remote --auth transmission:transmission -t %s --remove" % (identifier))
+    itv_shell.run("transmission-remote --auth transmission:transmission -t %s --remove" % (identifier))
 
 def delete_folder(folder):
     print("Deleting folder: " + folder)
-    # itv_shell.run("rm -rf '%s'" % (folder))
+    itv_shell.run("rm -rf '%s'" % (folder))
 
 def existing_shows_folders():
     result = itv_shell.result("cd '%s' && ls -d */ | cut -f1 -d'/'" % MEDIA_TV_SHOWS)
@@ -127,11 +127,11 @@ def move_file(source, destination):
         print("File exists... skipping")
     else:
         print("Move file: " + source + " >> " + destination)
-        # itv_shell.run("mv '%s' '%s'" % (source, destination))
+        itv_shell.run("mv '%s' '%s'" % (source, destination))
 
 def create_folder(folder):
     print("Creating Folder: " + folder)
-    # itv_shell.run("mkdir '%s' '%s'" % (folder))
+    itv_shell.run("mkdir '%s' '%s'" % (folder))
 
 ### --- MAIN --- ###
 parser = itv_argparser.parser(
