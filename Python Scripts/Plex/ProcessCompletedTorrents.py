@@ -20,6 +20,7 @@ parser = itv_argparser.parser(
     '''
 )
 parser.add_argument('--dryrun', help='Run the script to show what actions will happen first', action="store_true")
+parser.add_argument('--skipcleanup', help='Skips deleting the torrent folder', action="store_true")
 args = parser.parse_args(sys.argv[1:])
 
 home = "/home/plex"
@@ -84,7 +85,7 @@ def remove_torrent(identifier):
 
 def delete_folder(folder):
     print("Deleting folder: " + folder)
-    if args.dryrun is False:
+    if args.dryrun is False and args.skipcleanup is False:
         os.remove(folder)
 
 def existing_shows_folders():
