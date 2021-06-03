@@ -125,7 +125,7 @@ def torrent_folders():
 def get_title(text):
     title_search = re.split("(s\d\de\d\d)", text)
     if title_search is not None:
-        return title_search[0].replace('-', '').replace('.', ' ').strip()
+        return title_search[0].replace('-', '').replace('.', ' ').replace('+', ' ').strip()
     else:
         return None
 

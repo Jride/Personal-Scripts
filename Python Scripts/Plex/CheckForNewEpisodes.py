@@ -53,7 +53,7 @@ show_cache = []
 if itv_filesystem.does_file_exist(download_show_cache):
     file = open(download_show_cache, "r")
     show_cache = file.readlines()
-    print(show_cache)
+    # print(show_cache)
 
 url = 'http://showrss.info/user/255222.rss?magnets=true&namespaces=true&name=null&quality=null&re=null'
 o = untangle.parse(url)
