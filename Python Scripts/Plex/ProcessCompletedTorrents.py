@@ -254,4 +254,5 @@ for torrent in completed_torrents:
         destination = os.path.join(destination, torrent.name.replace(" ", ".") + "." + media_file.season_info + media_file.extension)
         move_file(media_file.file_path, destination)
 
-    delete_folder(torrent.folder)
+    torrent_folder = os.path.join(TV_SHOWS_FOLDER, torrent.folder)
+    delete_folder(torrent_folder)
