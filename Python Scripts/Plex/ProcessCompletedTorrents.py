@@ -201,14 +201,10 @@ for torrent_folder in all_torrents:
     completed_torrents.append(torrent)
 
 # Get all media files from torrents folder
-user_home = expanduser("~")
-TV_SHOWS_FOLDER = os.path.join(user_home, "torrents")
-TV_SHOWS_FOLDER = os.path.join(TV_SHOWS_FOLDER, "tv_shows")
-
 types = ('*.avi', '*.mp4', '*.mkv', '*.flv', '*.mov', '*.wmv')
 media_files = []
 for files in types:
-    search = os.path.join(TV_SHOWS_FOLDER, "**")
+    search = os.path.join(TORRENT_TV_SHOWS, "**")
     search = os.path.join(search, files)
     media_files.extend(glob.glob(search, recursive=True))
 
