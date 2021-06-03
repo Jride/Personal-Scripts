@@ -12,6 +12,16 @@ import itv_shell
 import itv_argparser
 import itv_filesystem
 
+### --- MAIN --- ###
+parser = itv_argparser.parser(
+    os.path.dirname(__file__),
+    '''
+    Checks for completed torrents, then renames and moves them into the correct plex media foldders
+    '''
+)
+parser.add_argument('--dryrun', help='Run the script to show what actions will happen first', action="store_true")
+args = parser.parse_args(sys.argv[1:])
+
 home = "/home/plex"
 TORRENT_TV_SHOWS = os.path.join(home, "torrents")
 TORRENT_TV_SHOWS = os.path.join(TORRENT_TV_SHOWS, "tv_shows")
@@ -69,11 +79,13 @@ def result(command):
 
 def remove_torrent(identifier):
     print("Removing torrent: " + identifier)
-    itv_shell.run("transmission-remote --auth transmission:transmission -t %s --remove" % (identifier))
+    if args.dryrun is False:
+        itv_shell.run("transmission-remote --auth transmission:transmission -t %s --remove" % (identifier))
 
 def delete_folder(folder):
     print("Deleting folder: " + folder)
-    itv_shell.run("rm -rf '%s'" % (folder))
+    if args.dryrun is False:
+        os.remove(folder)
 
 def existing_shows_folders():
     result = itv_shell.result("cd '%s' && ls -d */ | cut -f1 -d'/'" % MEDIA_TV_SHOWS)
@@ -126,21 +138,15 @@ def move_file(source, destination):
     if os.path.isfile(destination):
         print("File exists... skipping")
     else:
-        print("Move file: " + source + " >> " + destination)
-        itv_shell.run("mv '%s' '%s'" % (source, destination))
+        print("Move file: " + source + " \n>> " + destination)
+        if args.dryrun is False:
+            os.rename(source, destination)
 
 def create_folder(folder):
-    print("Creating Folder: " + folder)
-    itv_shell.run("mkdir '%s'" % (folder))
-
-### --- MAIN --- ###
-parser = itv_argparser.parser(
-    os.path.dirname(__file__),
-    '''
-    Checks for completed torrents, then renames and moves them into the correct plex media foldders
-    '''
-)
-args = parser.parse_args(sys.argv[1:])
+    if not os.path.exists(folder):
+        print("Creating Folder: " + folder)
+        if args.dryrun is False:
+            os.makedirs(folder)
 
 existing_folders = existing_shows_folders()
 
@@ -248,4 +254,3 @@ for torrent in completed_torrents:
         move_file(media_file.file_path, destination)
 
     delete_folder(torrent.folder)
-
