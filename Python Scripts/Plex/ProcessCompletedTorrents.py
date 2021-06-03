@@ -4,6 +4,7 @@ from os.path import expanduser
 import re
 import glob
 from pprint import pprint
+import shutil
 
 sys.path.append(os.path.expandvars('$ITV_PYTHON_CORE_MODULES'))
 sys.path.append(os.path.expandvars('$ITV_PYTHON_MODULES'))
@@ -86,7 +87,7 @@ def remove_torrent(identifier):
 def delete_folder(folder):
     print("Deleting folder: " + folder)
     if args.dryrun is False and args.skipcleanup is False:
-        os.remove(folder)
+        shutil.rmtree(folder)
 
 def existing_shows_folders():
     result = itv_shell.result("cd '%s' && ls -d */ | cut -f1 -d'/'" % MEDIA_TV_SHOWS)
