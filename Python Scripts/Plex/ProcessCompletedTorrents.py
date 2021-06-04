@@ -138,7 +138,7 @@ def get_season_info(text):
 
 def move_file(source, destination):
     if os.path.isfile(destination):
-        print("File exists... skipping")
+        print("File exists... skipping >> " + destination)
     else:
         print("Move file to: " + destination)
         if args.dryrun is False:
