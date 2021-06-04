@@ -125,7 +125,7 @@ def torrent_folders():
 def get_title(text):
     title_search = re.split("(s\d\de\d\d)", text)
     if title_search is not None:
-        return title_search[0].replace('-', '').replace('.', ' ').replace('+', ' ').strip()
+        return title_search[0].replace('-', '').replace('.', ' ').replace('+', ' ').replace('!', '').strip()
     else:
         return None
 
@@ -251,5 +251,5 @@ for torrent in completed_torrents:
         destination = os.path.join(destination, torrent.name.replace(" ", ".") + "." + media_file.season_info + media_file.extension)
         move_file(media_file.file_path, destination)
 
-    torrent_folder = os.path.join(TV_SHOWS_FOLDER, torrent.folder)
+    torrent_folder = os.path.join(TORRENT_TV_SHOWS, torrent.folder)
     delete_folder(torrent_folder)
