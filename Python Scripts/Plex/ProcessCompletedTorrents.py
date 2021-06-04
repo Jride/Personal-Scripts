@@ -85,6 +85,10 @@ def remove_torrent(identifier):
         itv_shell.run("transmission-remote --auth transmission:transmission -t %s --remove" % (identifier))
 
 def delete_folder(folder):
+    if os.path.isdir(folder) is False:
+        print("Path is file not directory...skipping")
+        return
+
     print("Deleting folder: " + folder)
     if args.dryrun is False and args.skipcleanup is False:
         shutil.rmtree(folder)
