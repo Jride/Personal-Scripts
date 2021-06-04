@@ -96,10 +96,10 @@ for key in torrents.keys():
         continue
 
     if torrent.magnet_1080 is None:
-        print("Downloading 720p")
+        print("Downloading 720p >> " + torrent.name)
         run("-a '%s'" % (torrent.magnet_720))
     else:
-        print("Downloading 1080p")
+        print("Downloading 1080p >> " + torrent.name)
         run("-a '%s'" % (torrent.magnet_1080))
 
     new_shows.append(torrent.cache_name())
