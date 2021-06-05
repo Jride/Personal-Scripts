@@ -20,6 +20,10 @@ class Torrent:
     magnet_720 = None
     magnet_1080 = None
 
+    @property
+    def id(self):
+        return self.name + "-" + self.season_episode
+
     def print_desc(self):
         print(self.name)
         print(self.season_episode)
@@ -79,13 +83,13 @@ for item in o.rss.channel.item:
         else:
             continue
 
-        if torrent.name in torrents:
+        if torrent.id in torrents:
             if torrent.magnet_1080 is None:
-                torrents[torrent.name].magnet_720 = link
+                torrents[torrent.id].magnet_720 = link
             else:
-                torrents[torrent.name].magnet_1080 = link
+                torrents[torrent.id].magnet_1080 = link
         else:
-            torrents[torrent.name] = torrent
+            torrents[torrent.id] = torrent
 
 new_shows = []
 for key in torrents.keys():
@@ -96,10 +100,10 @@ for key in torrents.keys():
         continue
 
     if torrent.magnet_1080 is None:
-        print("Downloading 720p >> " + torrent.name)
+        print("Downloading 720p >> " + torrent.id)
         run("-a '%s'" % (torrent.magnet_720))
     else:
-        print("Downloading 1080p >> " + torrent.name)
+        print("Downloading 1080p >> " + torrent.id)
         run("-a '%s'" % (torrent.magnet_1080))
 
     new_shows.append(torrent.cache_name())
