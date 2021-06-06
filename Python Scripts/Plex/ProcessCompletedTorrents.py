@@ -8,10 +8,11 @@ import shutil
 
 sys.path.append(os.path.expandvars('$ITV_PYTHON_CORE_MODULES'))
 sys.path.append(os.path.expandvars('$ITV_PYTHON_MODULES'))
+sys.path.append(os.path.expandvars('$PYTHON_MODULES'))
 
 import itv_shell
 import itv_argparser
-import itv_filesystem
+import notifications
 
 ### --- MAIN --- ###
 parser = itv_argparser.parser(
@@ -24,7 +25,7 @@ parser.add_argument('--dryrun', help='Run the script to show what actions will h
 parser.add_argument('--skipcleanup', help='Skips deleting the torrent folder', action="store_true")
 args = parser.parse_args(sys.argv[1:])
 
-home = "/home/plex"
+home = expanduser("~")
 TORRENT_TV_SHOWS = os.path.join(home, "torrents")
 TORRENT_TV_SHOWS = os.path.join(TORRENT_TV_SHOWS, "tv_shows")
 
@@ -143,10 +144,14 @@ def get_season_info(text):
 def move_file(source, destination):
     if os.path.isfile(destination):
         print("File exists... skipping >> " + destination)
+        return False
     else:
         print("Move file to: " + destination)
         if args.dryrun is False:
             os.rename(source, destination)
+            return True
+        else:
+            return False
 
 def create_folder(folder):
     if not os.path.exists(folder):
@@ -250,10 +255,15 @@ for torrent in completed_torrents:
     if torrent.identifier is not None:
         remove_torrent(torrent.identifier)
 
+    new_episode = False
     for media_file in torrent.media_list:
         destination = os.path.join(MEDIA_TV_SHOWS, folder)
         destination = os.path.join(destination, torrent.name.replace(" ", ".") + "." + media_file.season_info + media_file.extension)
-        move_file(media_file.file_path, destination)
+        new_episode = move_file(media_file.file_path, destination)
+
+    if new_episode:
+        message = "New episode(s) available for: " + torrent.name
+        notifications.send("New Episode Available", message)
 
     torrent_folder = os.path.join(TORRENT_TV_SHOWS, torrent.folder)
     delete_folder(torrent_folder)
