@@ -12,9 +12,7 @@ import itv_argparser
 import itv_filesystem
 
 def run(command):
-    done_script = os.path.expandvars('$PYTHON_SCRIPTS')
-    done_script = os.path.join(done_script, 'Plex/processCompletedTorrents.sh')
-    itv_shell.run("transmission-remote --auth transmission:transmission -w ~/torrents/tv_shows %s --torrent-done-script '%s'" % (command, done_script))
+    itv_shell.run("transmission-remote --auth transmission:transmission -w ~/torrents/tv_shows %s" % (command))
 
 class Torrent:
     name = None
