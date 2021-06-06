@@ -262,7 +262,7 @@ for torrent in completed_torrents:
         new_episode = move_file(media_file.file_path, destination)
 
     if new_episode:
-        message = "New episode(s) available for: " + torrent.name
+        message = "New episode(s) available for " + torrent.name
         notifications.send("New Episode Available", message)
 
     torrent_folder = os.path.join(TORRENT_TV_SHOWS, torrent.folder)
