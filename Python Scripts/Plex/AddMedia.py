@@ -18,11 +18,15 @@ parser = itv_argparser.parser(
 )
 parser.add_argument('--show', help='Adds tv show', action="store_true")
 parser.add_argument('--movie', help='Adds move', action="store_true")
+parser.add_argument('--shortcut', help='Run from shortcut', action="store_true")
 parser.add_argument('--magnet', help='magnet link')
 args = parser.parse_args(sys.argv[1:])
 
 def run(command):
-    itv_shell.run("ssh -t plex@plex-server.myddns.me -p 8888 \"transmission-remote --auth transmission:transmission %s\"" % (command))
+    if args.shortcut:
+        itv_shell.run("ssh -t plex@plex-server.myddns.me -p 8888 \"transmission-remote --auth transmission:transmission %s\"" % (command))
+    else:
+        itv_shell.run("transmission-remote --auth transmission:transmission %s" % (command))
 
 if args.show:
     folder_name = "tv_show"
