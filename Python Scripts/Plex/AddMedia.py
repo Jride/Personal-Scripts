@@ -24,9 +24,9 @@ args = parser.parse_args(sys.argv[1:])
 
 def run(command):
     if args.shortcut:
-        itv_shell.run("ssh -t plex@plex-server.myddns.me -p 8888 \"transmission-remote --auth transmission:transmission %s\"" % (command))
-    else:
         itv_shell.run("transmission-remote --auth transmission:transmission %s" % (command))
+    else:
+        itv_shell.run("ssh -t plex@plex-server.myddns.me -p 8888 \"transmission-remote --auth transmission:transmission %s\"" % (command))
 
 if args.show:
     folder_name = "tv_show"
