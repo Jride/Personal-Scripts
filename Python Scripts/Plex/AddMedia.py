@@ -19,7 +19,7 @@ parser = itv_argparser.parser(
 args = parser.parse_args(sys.argv[1:])
 
 def run(command):
-    itv_shell.run("ssh -t plex@plex-server.myddns.me \"transmission-remote --auth transmission:transmission %s\"" % (command))
+    itv_shell.run("ssh -t plex@plex-server.myddns.me -p 8888 \"transmission-remote --auth transmission:transmission %s\"" % (command))
 
 media_types = {
     "TV Show": "tv_shows",
