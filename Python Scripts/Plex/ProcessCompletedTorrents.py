@@ -30,12 +30,12 @@ TORRENT_MEDIA_FOLDER = os.path.join(home, "torrents")
 # tv_shows
 TORRENT_MEDIA_FOLDER = os.path.join(TORRENT_MEDIA_FOLDER, args.torrentFolderName)
 
-MEDIA_TV_SHOWS = os.path.join(home, "Videos")
-MEDIA_TV_SHOWS = os.path.join(MEDIA_TV_SHOWS, "Media")
+MEDIA_FOLDER = os.path.join(home, "Videos")
+MEDIA_FOLDER = os.path.join(MEDIA_FOLDER, "Media")
 # "TV Shows"
-MEDIA_TV_SHOWS = os.path.join(MEDIA_TV_SHOWS, args.mediaFolderName) 
+MEDIA_FOLDER = os.path.join(MEDIA_FOLDER, args.mediaFolderName) 
 
-existing_folders = torrents.existing_shows_folders(MEDIA_TV_SHOWS)
+existing_folders = torrents.existing_shows_folders(MEDIA_FOLDER)
 
 completed_torrents = []
 all_torrents = torrents.torrent_folders(TORRENT_MEDIA_FOLDER)
@@ -124,7 +124,7 @@ for torrent in completed_torrents:
     folder = torrents.find_existing_folder_for_show(existing_folders, torrent.name)
 
     if folder is None:
-        new_folder = os.path.join(MEDIA_TV_SHOWS, torrent.name)
+        new_folder = os.path.join(MEDIA_FOLDER, torrent.name)
         torrents.create_folder(new_folder, args.dryrun)
         existing_folders[torrent.name] = [torrent.name]
         folder = torrent.name
@@ -134,7 +134,7 @@ for torrent in completed_torrents:
 
     new_episode = False
     for media_file in torrent.media_list:
-        destination = os.path.join(MEDIA_TV_SHOWS, folder)
+        destination = os.path.join(MEDIA_FOLDER, folder)
         destination = os.path.join(destination, torrent.name.replace(" ", ".") + "." + media_file.season_info + media_file.extension)
         new_episode = torrents.move_file(media_file.file_path, destination, args.dryrun)
 
