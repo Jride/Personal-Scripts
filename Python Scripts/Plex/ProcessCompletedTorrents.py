@@ -3,35 +3,14 @@ import os
 from os.path import expanduser
 import re
 import glob
-from pprint import pprint
-import shutil
 
 sys.path.append(os.path.expandvars('$ITV_PYTHON_CORE_MODULES'))
 sys.path.append(os.path.expandvars('$ITV_PYTHON_MODULES'))
 sys.path.append(os.path.expandvars('$PYTHON_MODULES'))
 
-import itv_shell
 import itv_argparser
 import notifications
-
-### --- MAIN --- ###
-parser = itv_argparser.parser(
-    os.path.dirname(__file__),
-    '''
-    Checks for completed torrents, then renames and moves them into the correct plex media foldders
-    '''
-)
-parser.add_argument('--dryrun', help='Run the script to show what actions will happen first', action="store_true")
-parser.add_argument('--skipcleanup', help='Skips deleting the torrent folder', action="store_true")
-args = parser.parse_args(sys.argv[1:])
-
-home = expanduser("~")
-TORRENT_TV_SHOWS = os.path.join(home, "torrents")
-TORRENT_TV_SHOWS = os.path.join(TORRENT_TV_SHOWS, "tv_shows")
-
-MEDIA_TV_SHOWS = os.path.join(home, "Videos")
-MEDIA_TV_SHOWS = os.path.join(MEDIA_TV_SHOWS, "Media")
-MEDIA_TV_SHOWS = os.path.join(MEDIA_TV_SHOWS, "TV Shows")
+import torrents
 
 class Media:
     file_path = None
@@ -77,94 +56,32 @@ class Torrent:
         for media in self.media_list:
             media.print_desc()
 
-def result(command):
-    return itv_shell.result("transmission-remote --auth transmission:transmission %s" % (command))
+### --- MAIN --- ###
+parser = itv_argparser.parser(
+    os.path.dirname(__file__),
+    '''
+    Checks for completed torrents, then renames and moves them into the correct plex media foldders
+    '''
+)
+parser.add_argument('--dryrun', help='Run the script to show what actions will happen first', action="store_true")
+parser.add_argument('--skipcleanup', help='Skips deleting the torrent folder', action="store_true")
+args = parser.parse_args(sys.argv[1:])
 
-def remove_torrent(identifier):
-    print("Removing torrent: " + identifier)
-    if args.dryrun is False:
-        itv_shell.run("transmission-remote --auth transmission:transmission -t %s --remove" % (identifier))
+home = expanduser("~")
+TORRENT_TV_SHOWS = os.path.join(home, "torrents")
+TORRENT_TV_SHOWS = os.path.join(TORRENT_TV_SHOWS, "tv_shows")
 
-def delete_folder(folder):
-    if os.path.isdir(folder) is False:
-        print("Path is file not directory...skipping")
-        return
+MEDIA_TV_SHOWS = os.path.join(home, "Videos")
+MEDIA_TV_SHOWS = os.path.join(MEDIA_TV_SHOWS, "Media")
+MEDIA_TV_SHOWS = os.path.join(MEDIA_TV_SHOWS, "TV Shows")
 
-    print("Deleting folder: " + folder)
-    if args.dryrun is False and args.skipcleanup is False:
-        shutil.rmtree(folder)
-
-def existing_shows_folders():
-    result = itv_shell.result("cd '%s' && ls -d */ | cut -f1 -d'/'" % MEDIA_TV_SHOWS)
-    lines = result.splitlines()
-    folders = {}
-    for line in lines:
-        folders[line] = [line]
-
-        line_variation = line.lower()
-        folders[line].append(line_variation)
-
-        line_variation = line_variation.replace('(', '').replace(')', '')
-        folders[line].append(line_variation)
-
-        line_variation = line_variation.replace('-', '')
-        folders[line].append(line_variation)
-
-        line_variation = line_variation.replace('\'', '')
-        folders[line].append(line_variation)
-
-    return folders
-
-def find_existing_folder_for_show(folders, show):
-    for key in folders.keys():
-        if show in folders[key]:
-            return key
-
-    return None
-
-
-def torrent_folders():
-    result = itv_shell.result("cd '%s' && ls -d */ | cut -f1 -d'/'" % TORRENT_TV_SHOWS)
-    return result.splitlines()
-
-def get_title(text):
-    title_search = re.split("(s\d\de\d\d)", text)
-    if title_search is not None:
-        return title_search[0].replace('-', '').replace('.', ' ').replace('+', ' ').replace('!', '').strip()
-    else:
-        return None
-
-def get_season_info(text):
-    season_search = re.search("(s\d\de\d\d)", text)
-    if season_search is not None:
-        return season_search.group()
-    else:
-        return None
-
-def move_file(source, destination):
-    if os.path.isfile(destination):
-        print("File exists... skipping >> " + destination)
-        return False
-    else:
-        print("Move file to: " + destination)
-        if args.dryrun is False:
-            os.rename(source, destination)
-            return True
-        else:
-            return False
-
-def create_folder(folder):
-    if not os.path.exists(folder):
-        print("Creating Folder: " + folder)
-        if args.dryrun is False:
-            os.makedirs(folder)
-
-existing_folders = existing_shows_folders()
+existing_folders = torrents.existing_shows_folders(MEDIA_TV_SHOWS)
 
 completed_torrents = []
-all_torrents = torrent_folders()
-response = result("-l")
+all_torrents = torrents.torrent_folders(TORRENT_TV_SHOWS)
+response = torrents.result("-l")
 lines = response.splitlines()
+
 # Removes header and footer from the printed table
 del lines[0]
 del lines[-1]
@@ -185,7 +102,7 @@ for index, line in enumerate(lines):
     # torrent.print_desc()
 
     folder = torrent.folder.lower()
-    torrent.name = get_title(folder)
+    torrent.name = torrents.get_title(folder)
 
     # Only add the completed ones
     if torrent.is_done:
@@ -206,7 +123,7 @@ for torrent_folder in all_torrents:
     )
 
     folder = torrent_folder.lower()
-    torrent.name = get_title(folder)
+    torrent.name = torrents.get_title(folder)
     completed_torrents.append(torrent)
 
 # Get all media files from torrents folder
@@ -230,11 +147,11 @@ for torrent in completed_torrents:
             file_name = file_name_chunks[-1]
 
             # print(file_name)
-            torrent_name = get_title(file_name.lower())
+            torrent_name = torrents.get_title(file_name.lower())
             if torrent_name is not None:
                 torrent.name = torrent_name
 
-            season_info = get_season_info(file_name.lower())
+            season_info = torrents.get_season_info(file_name.lower())
             if season_info is not None:
                 media = Media(file_path, file_name, season_info)
                 found_media.append(media)
@@ -244,26 +161,26 @@ for torrent in completed_torrents:
 
 # Process Completed Torrents Only
 for torrent in completed_torrents:
-    folder = find_existing_folder_for_show(existing_folders, torrent.name)
+    folder = torrents.find_existing_folder_for_show(existing_folders, torrent.name)
 
     if folder is None:
         new_folder = os.path.join(MEDIA_TV_SHOWS, torrent.name)
-        create_folder(new_folder)
+        torrents.create_folder(new_folder, args.dryrun)
         existing_folders[torrent.name] = [torrent.name]
         folder = torrent.name
 
     if torrent.identifier is not None:
-        remove_torrent(torrent.identifier)
+        torrents.remove_torrent(torrent.identifier, args.dryrun)
 
     new_episode = False
     for media_file in torrent.media_list:
         destination = os.path.join(MEDIA_TV_SHOWS, folder)
         destination = os.path.join(destination, torrent.name.replace(" ", ".") + "." + media_file.season_info + media_file.extension)
-        new_episode = move_file(media_file.file_path, destination)
+        new_episode = torrents.move_file(media_file.file_path, destination, args.dryrun)
 
     if new_episode:
         message = "New episode(s) available for " + torrent.name
         notifications.send("New Episode Available", message)
 
     torrent_folder = os.path.join(TORRENT_TV_SHOWS, torrent.folder)
-    delete_folder(torrent_folder)
+    torrents.delete_folder(torrent_folder)
