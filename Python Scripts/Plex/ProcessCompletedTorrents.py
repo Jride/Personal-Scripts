@@ -19,21 +19,46 @@ parser = itv_argparser.parser(
     Checks for completed torrents, then renames and moves them into the correct plex media foldders
     '''
 )
-parser.add_argument('-torrentFolderName', help='Torrent folder name (tv_shows)')
-parser.add_argument('-mediaFolderName', help='Media folder name (Tv Shows, Movies)')
+parser.add_argument('-mediaType', help='show, movie, kids_show, kids_movie')
 parser.add_argument('--dryrun', help='Run the script to show what actions will happen first', action="store_true")
 parser.add_argument('--skipcleanup', help='Skips deleting the torrent folder', action="store_true")
 args = parser.parse_args(sys.argv[1:])
 
 home = expanduser("~")
 TORRENT_MEDIA_FOLDER = os.path.join(home, "torrents")
-# tv_shows
-TORRENT_MEDIA_FOLDER = os.path.join(TORRENT_MEDIA_FOLDER, args.torrentFolderName)
+torrentFolderName = "tv_shows"
+
+if args.mediaType == "movie":
+    torrentFolderName = "movies"
+
+if args.mediaType == "kids_show":
+    torrentFolderName = "kids_shows"
+
+if args.mediaType == "kids_movie":
+    torrentFolderName = "kids_movies"
+
+TORRENT_MEDIA_FOLDER = os.path.join(TORRENT_MEDIA_FOLDER, torrentFolderName)
 
 MEDIA_FOLDER = os.path.join(home, "Videos")
 MEDIA_FOLDER = os.path.join(MEDIA_FOLDER, "Media")
 # "TV Shows"
-MEDIA_FOLDER = os.path.join(MEDIA_FOLDER, args.mediaFolderName) 
+
+mediaFolderName = "TV Shows"
+
+if args.mediaType == "movie":
+    mediaFolderName = "Movies"
+
+if args.mediaType == "kids_show":
+    mediaFolderName = "Kids/TV Shows"
+
+if args.mediaType == "kids_movie":
+    mediaFolderName = "Kids/Movies"
+
+MEDIA_FOLDER = os.path.join(MEDIA_FOLDER, mediaFolderName)
+
+IS_MOVIE = False
+if args.mediaType == "movie" or args.mediaType == "kids_movie":
+    IS_MOVIE = True
 
 existing_folders = torrents.existing_shows_folders(MEDIA_FOLDER)
 
@@ -62,7 +87,7 @@ for index, line in enumerate(lines):
     # torrent.print_desc()
 
     folder = torrent.folder.lower()
-    torrent.name = torrents.get_title(folder)
+    torrent.name = torrents.get_title(folder, IS_MOVIE)
 
     # Only add the completed ones
     if torrent.is_done:
@@ -83,7 +108,7 @@ for torrent_folder in all_torrents:
     )
 
     folder = torrent_folder.lower()
-    torrent.name = torrents.get_title(folder)
+    torrent.name = torrents.get_title(folder, IS_MOVIE)
     completed_torrents.append(torrent)
 
 # Get all media files from torrents folder
@@ -107,14 +132,18 @@ for torrent in completed_torrents:
             file_name = file_name_chunks[-1]
 
             # print(file_name)
-            torrent_name = torrents.get_title(file_name.lower())
+            torrent_name = torrents.get_title(file_name.lower(), IS_MOVIE)
             if torrent_name is not None:
                 torrent.name = torrent_name
 
-            season_info = torrents.get_season_info(file_name.lower())
-            if season_info is not None:
-                media = torrents.Media(file_path, file_name, season_info)
+            if IS_MOVIE:
+                media = torrents.Media(file_path, file_name)
                 found_media.append(media)
+            else:
+                season_info = torrents.get_season_info(file_name.lower())
+                if season_info is not None:
+                    media = torrents.Media(file_path, file_name, season_info)
+                    found_media.append(media)
 
     torrent.media_list = found_media
     # torrent.print_media_list()
@@ -132,15 +161,24 @@ for torrent in completed_torrents:
     if torrent.identifier is not None:
         torrents.remove_torrent(torrent.identifier, args.dryrun)
 
-    new_episode = False
+    new_media = False
     for media_file in torrent.media_list:
         destination = os.path.join(MEDIA_FOLDER, folder)
-        destination = os.path.join(destination, torrent.name.replace(" ", ".") + "." + media_file.season_info + media_file.extension)
-        new_episode = torrents.move_file(media_file.file_path, destination, args.dryrun)
 
-    if new_episode:
-        message = "New episode(s) available for " + torrent.name
-        notifications.send("New Episode Available", message)
+        if IS_MOVIE:
+            destination = os.path.join(destination, torrent.name.replace(" ", ".") + "." + media_file.extension)
+        else:
+            destination = os.path.join(destination, torrent.name.replace(" ", ".") + "." + media_file.season_info + media_file.extension)
+
+        new_media = torrents.move_file(media_file.file_path, destination, args.dryrun)
+
+    if new_media:
+        if IS_MOVIE:
+            message = "Movie finished downloading: " + torrent.name
+            notifications.send("Movie Download Complete", message)
+        else:
+            message = "New episode(s) available for " + torrent.name
+            notifications.send("New Episode Available", message)
 
     torrent_folder = os.path.join(TORRENT_MEDIA_FOLDER, torrent.folder)
     torrents.delete_folder(torrent_folder, args.dryrun, args.skipcleanup)

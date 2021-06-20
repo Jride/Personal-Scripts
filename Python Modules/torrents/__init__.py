@@ -17,7 +17,7 @@ class Media:
     season_info = None
     extension = None
 
-    def __init__(self, file_path, file_name, season_info):
+    def __init__(self, file_path, file_name, season_info=None):
         self.file_path = file_path
         self.file_name = file_name
         self.season_info = season_info
@@ -105,7 +105,11 @@ def torrent_folders(torrent_media_folder):
     result = itv_shell.result("cd '%s' && ls -d */ | cut -f1 -d'/'" % torrent_media_folder)
     return result.splitlines()
 
-def get_title(text):
+def get_title(text, is_movie):
+
+    if is_movie is True:
+        return text[:-4]
+
     title_search = re.split("(s\d\de\d\d)", text)
     if title_search is not None:
         return title_search[0].replace('-', '').replace('.', ' ').replace('+', ' ').replace('!', '').strip()
@@ -113,6 +117,7 @@ def get_title(text):
         return None
 
 def get_season_info(text):
+
     season_search = re.search("(s\d\de\d\d)", text)
     if season_search is not None:
         return season_search.group()
