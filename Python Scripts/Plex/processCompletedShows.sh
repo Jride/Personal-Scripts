@@ -2,4 +2,4 @@
 
 source ~/.bash_profile
 
-python3 "$PYTHON_SCRIPTS/Plex/ProcessCompletedTorrents.py" -mediaType show
+python3 "$PYTHON_SCRIPTS/Plex/ProcessCompletedTorrents.py" -mediaTypesdf show
