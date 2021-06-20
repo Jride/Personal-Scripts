@@ -11,6 +11,50 @@ import itv_shell
 scripts_path = os.path.expandvars('$SCRIPTS')
 itv_scripts_path = os.path.expandvars('$ITV_SCRIPTS')
 
+class Media:
+    file_path = None
+    file_name = None
+    season_info = None
+    extension = None
+
+    def __init__(self, file_path, file_name, season_info):
+        self.file_path = file_path
+        self.file_name = file_name
+        self.season_info = season_info
+        self.extension = file_name[-4:]
+
+    def print_desc(self):
+        print("file_path: " + self.file_path)
+        print("season_info: " + self.season_info)
+
+class Torrent:
+    identifier = None
+    folder = None
+    size = None
+    done = None
+    name = None
+    media_list = []
+
+    def __init__(self, identifier, folder, size, done):
+        self.identifier = identifier
+        self.folder = folder
+        self.size = size
+        self.done = done
+
+    @property
+    def is_done(self):
+        return "100" in self.done
+
+    def print_desc(self):
+        print("ID: " + self.identifier)
+        print("Folder: " + self.folder)
+        print("DONE: " + self.done)
+
+    def print_media_list(self):
+        print("MEDIA LIST>>> %s" % len(self.media_list))
+        for media in self.media_list:
+            media.print_desc()
+
 def result(command):
     return itv_shell.result("transmission-remote --auth transmission:transmission %s" % (command))
 

@@ -12,50 +12,6 @@ import itv_argparser
 import notifications
 import torrents
 
-class Media:
-    file_path = None
-    file_name = None
-    season_info = None
-    extension = None
-
-    def __init__(self, file_path, file_name, season_info):
-        self.file_path = file_path
-        self.file_name = file_name
-        self.season_info = season_info
-        self.extension = file_name[-4:]
-
-    def print_desc(self):
-        print("file_path: " + self.file_path)
-        print("season_info: " + self.season_info)
-
-class Torrent:
-    identifier = None
-    folder = None
-    size = None
-    done = None
-    name = None
-    media_list = []
-
-    def __init__(self, identifier, folder, size, done):
-        self.identifier = identifier
-        self.folder = folder
-        self.size = size
-        self.done = done
-
-    @property
-    def is_done(self):
-        return "100" in self.done
-
-    def print_desc(self):
-        print("ID: " + self.identifier)
-        print("Folder: " + self.folder)
-        print("DONE: " + self.done)
-
-    def print_media_list(self):
-        print("MEDIA LIST>>> %s" % len(self.media_list))
-        for media in self.media_list:
-            media.print_desc()
-
 ### --- MAIN --- ###
 parser = itv_argparser.parser(
     os.path.dirname(__file__),
@@ -63,22 +19,26 @@ parser = itv_argparser.parser(
     Checks for completed torrents, then renames and moves them into the correct plex media foldders
     '''
 )
+parser.add_argument('-torrentFolderName', help='Torrent folder name (tv_shows)')
+parser.add_argument('-mediaFolderName', help='Media folder name (Tv Shows, Movies)')
 parser.add_argument('--dryrun', help='Run the script to show what actions will happen first', action="store_true")
 parser.add_argument('--skipcleanup', help='Skips deleting the torrent folder', action="store_true")
 args = parser.parse_args(sys.argv[1:])
 
 home = expanduser("~")
-TORRENT_TV_SHOWS = os.path.join(home, "torrents")
-TORRENT_TV_SHOWS = os.path.join(TORRENT_TV_SHOWS, "tv_shows")
+TORRENT_MEDIA_FOLDER = os.path.join(home, "torrents")
+# tv_shows
+TORRENT_MEDIA_FOLDER = os.path.join(TORRENT_MEDIA_FOLDER, args.torrentFolderName)
 
 MEDIA_TV_SHOWS = os.path.join(home, "Videos")
 MEDIA_TV_SHOWS = os.path.join(MEDIA_TV_SHOWS, "Media")
-MEDIA_TV_SHOWS = os.path.join(MEDIA_TV_SHOWS, "TV Shows")
+# "TV Shows"
+MEDIA_TV_SHOWS = os.path.join(MEDIA_TV_SHOWS, args.mediaFolderName) 
 
 existing_folders = torrents.existing_shows_folders(MEDIA_TV_SHOWS)
 
 completed_torrents = []
-all_torrents = torrents.torrent_folders(TORRENT_TV_SHOWS)
+all_torrents = torrents.torrent_folders(TORRENT_MEDIA_FOLDER)
 response = torrents.result("-l")
 lines = response.splitlines()
 
@@ -92,7 +52,7 @@ for index, line in enumerate(lines):
     text = re.sub(' +', ' ', text)
     properties = text.split(' ')
 
-    torrent = Torrent(
+    torrent = torrents.Torrent(
         properties[0].strip().replace('>>>space<<<', ' '),
         properties[-1].strip().replace('>>>space<<<', ' '),
         properties[2].strip().replace('>>>space<<<', ' '),
@@ -115,7 +75,7 @@ for index, line in enumerate(lines):
 # Add any untracked completed torrents to the list
 for torrent_folder in all_torrents:
 
-    torrent = Torrent(
+    torrent = torrents.Torrent(
         None,
         torrent_folder,
         None,
@@ -130,7 +90,7 @@ for torrent_folder in all_torrents:
 types = ('*.avi', '*.mp4', '*.mkv', '*.flv', '*.mov', '*.wmv')
 media_files = []
 for files in types:
-    search = os.path.join(TORRENT_TV_SHOWS, "**")
+    search = os.path.join(TORRENT_MEDIA_FOLDER, "**")
     search = os.path.join(search, files)
     media_files.extend(glob.glob(search, recursive=True))
 
@@ -153,7 +113,7 @@ for torrent in completed_torrents:
 
             season_info = torrents.get_season_info(file_name.lower())
             if season_info is not None:
-                media = Media(file_path, file_name, season_info)
+                media = torrents.Media(file_path, file_name, season_info)
                 found_media.append(media)
 
     torrent.media_list = found_media
@@ -182,5 +142,5 @@ for torrent in completed_torrents:
         message = "New episode(s) available for " + torrent.name
         notifications.send("New Episode Available", message)
 
-    torrent_folder = os.path.join(TORRENT_TV_SHOWS, torrent.folder)
+    torrent_folder = os.path.join(TORRENT_MEDIA_FOLDER, torrent.folder)
     torrents.delete_folder(torrent_folder, args.dryrun, args.skipcleanup)
