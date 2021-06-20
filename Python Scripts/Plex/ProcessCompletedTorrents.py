@@ -183,4 +183,4 @@ for torrent in completed_torrents:
         notifications.send("New Episode Available", message)
 
     torrent_folder = os.path.join(TORRENT_TV_SHOWS, torrent.folder)
-    torrents.delete_folder(torrent_folder)
+    torrents.delete_folder(torrent_folder, args.dryrun, args.skipcleanup)
