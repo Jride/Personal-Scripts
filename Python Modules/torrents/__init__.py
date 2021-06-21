@@ -61,9 +61,9 @@ class Torrent:
         if media_type == "movie":
             ratio = 0
             media_item = None
-            
+
             for item in self.media_list:
-                new_ratio = similar(item)
+                new_ratio = similar(item.file_name, self.folder)
                 print("Comparing: " + item.file_name + " with: " + self.folder)
                 print("RATIO >>> " + new_ratio)
                 if new_ratio > ratio:
