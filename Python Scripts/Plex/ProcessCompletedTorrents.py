@@ -60,8 +60,6 @@ IS_MOVIE = False
 if args.mediaType == "movie" or args.mediaType == "kids_movie":
     IS_MOVIE = True
 
-existing_folders = torrents.existing_shows_folders(MEDIA_FOLDER)
-
 completed_torrents = []
 all_torrents = torrents.torrent_folders(TORRENT_MEDIA_FOLDER)
 response = torrents.result("-l")
@@ -158,6 +156,7 @@ for torrent in completed_torrents:
 for torrent in completed_torrents:
 
     if IS_MOVIE is False:
+        existing_folders = torrents.existing_shows_folders(MEDIA_FOLDER)
         folder = torrents.find_existing_folder_for_show(existing_folders, torrent.name)
         if folder is None:
             new_folder = os.path.join(MEDIA_FOLDER, torrent.name)
