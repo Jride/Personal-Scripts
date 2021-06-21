@@ -122,10 +122,13 @@ for files in types:
 # pprint(media_files)
 
 # Build up media files info
+torrents_to_process = []
 for torrent in completed_torrents:
+    should_process_torrent = False
     found_media = []
     for file_path in media_files:
         if torrent.folder in file_path:
+            should_process_torrent = True
             # print(file_path)
             # print(torrent_folder)
             file_name_chunks = file_path.split("/")
@@ -146,28 +149,32 @@ for torrent in completed_torrents:
                     found_media.append(media)
 
     torrent.media_list = found_media
+
+    if should_process_torrent:
+        torrents_to_process.append(torrent)
     # torrent.print_media_list()
 
 # Process Completed Torrents Only
 for torrent in completed_torrents:
-    folder = torrents.find_existing_folder_for_show(existing_folders, torrent.name)
 
-    if folder is None:
-        new_folder = os.path.join(MEDIA_FOLDER, torrent.name)
-        torrents.create_folder(new_folder, args.dryrun)
-        existing_folders[torrent.name] = [torrent.name]
-        folder = torrent.name
+    if IS_MOVIE is False:
+        folder = torrents.find_existing_folder_for_show(existing_folders, torrent.name)
+        if folder is None:
+            new_folder = os.path.join(MEDIA_FOLDER, torrent.name)
+            torrents.create_folder(new_folder, args.dryrun)
+            existing_folders[torrent.name] = [torrent.name]
+            folder = torrent.name
 
     if torrent.identifier is not None:
         torrents.remove_torrent(torrent.identifier, args.dryrun)
 
     new_media = False
     for media_file in torrent.media_list:
-        destination = os.path.join(MEDIA_FOLDER, folder)
 
         if IS_MOVIE:
-            destination = os.path.join(destination, torrent.name.replace(" ", ".") + "." + media_file.extension)
+            destination = os.path.join(MEDIA_FOLDER, media_file.file_name)
         else:
+            destination = os.path.join(MEDIA_FOLDER, folder)
             destination = os.path.join(destination, torrent.name.replace(" ", ".") + "." + media_file.season_info + media_file.extension)
 
         new_media = torrents.move_file(media_file.file_path, destination, args.dryrun)
