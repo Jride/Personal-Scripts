@@ -170,7 +170,7 @@ for torrent in completed_torrents:
         torrents.remove_torrent(torrent.identifier, args.dryrun)
 
     new_media = False
-    for media_file in torrent.media_list:
+    for media_file in torrent.media(args.mediaType):
 
         if IS_MOVIE:
             destination = os.path.join(MEDIA_FOLDER, media_file.file_name)

@@ -2,6 +2,7 @@ import sys
 import os
 import re
 import shutil
+from difflib import SequenceMatcher
 
 sys.path.append(os.path.expandvars('$ITV_PYTHON_CORE_MODULES'))
 sys.path.append(os.path.expandvars('$ITV_PYTHON_MODULES'))
@@ -55,6 +56,26 @@ class Torrent:
         print("MEDIA LIST>>> %s" % len(self.media_list))
         for media in self.media_list:
             media.print_desc()
+
+    def media(self, media_type):
+        if media_type == "movie":
+            ratio = 0
+            media_item = None
+            
+            for item in self.media_list:
+                new_ratio = similar(item)
+                print("Comparing: " + item.file_name + " with: " + self.folder)
+                print("RATIO >>> " + new_ratio)
+                if new_ratio > ratio:
+                    ratio = new_ratio
+                    media_item = item
+
+            return [media_item]
+        else:
+            return self.media_list
+
+def similar(a, b):
+    return SequenceMatcher(None, a, b).ratio()
 
 def result(command):
     return itv_shell.result("transmission-remote --auth transmission:transmission %s" % (command))
