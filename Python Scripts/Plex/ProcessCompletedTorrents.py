@@ -3,6 +3,7 @@ import os
 from os.path import expanduser
 import re
 import glob
+from pprint import pprint
 
 sys.path.append(os.path.expandvars('$ITV_PYTHON_CORE_MODULES'))
 sys.path.append(os.path.expandvars('$ITV_PYTHON_MODULES'))
@@ -85,7 +86,8 @@ for index, line in enumerate(lines):
         properties[1].strip().replace('>>>space<<<', ' ')
     )
 
-    # torrent.print_desc()
+    if args.verbose:
+        torrent.print_desc()
 
     folder = torrent.folder.lower()
     torrent.name = torrents.get_title(folder, IS_MOVIE)
@@ -120,16 +122,14 @@ for files in types:
     search = os.path.join(search, files)
     media_files.extend(glob.glob(search, recursive=True))
 
-# pprint(media_files)
+if args.verbose:
+    pprint(media_files)
 
 # Build up media files info
-torrents_to_process = []
 for torrent in completed_torrents:
-    should_process_torrent = False
     found_media = []
     for file_path in media_files:
         if torrent.folder in file_path:
-            should_process_torrent = True
             # print(file_path)
             # print(torrent_folder)
             file_name_chunks = file_path.split("/")
@@ -151,9 +151,8 @@ for torrent in completed_torrents:
 
     torrent.media_list = found_media
 
-    if should_process_torrent:
-        torrents_to_process.append(torrent)
-    # torrent.print_media_list()
+    if args.verbose:
+        torrent.print_media_list()
 
 # Process Completed Torrents Only
 for torrent in completed_torrents:
