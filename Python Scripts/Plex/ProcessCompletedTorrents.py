@@ -157,6 +157,10 @@ for torrent in completed_torrents:
 # Process Completed Torrents Only
 for torrent in completed_torrents:
 
+    if not torrent.media_list:
+        print("No media for torrent")
+        continue
+
     if IS_MOVIE is False:
         existing_folders = torrents.existing_shows_folders(MEDIA_FOLDER)
         folder = torrents.find_existing_folder_for_show(existing_folders, torrent.name)
