@@ -65,6 +65,9 @@ all_torrents = torrents.torrent_folders(TORRENT_MEDIA_FOLDER)
 response = torrents.result("-l")
 lines = response.splitlines()
 
+if args.verbose:
+    print(all_torrents)
+
 # Removes header and footer from the printed table
 del lines[0]
 del lines[-1]
