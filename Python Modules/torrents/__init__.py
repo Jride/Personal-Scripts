@@ -25,7 +25,8 @@ class Media:
 
     def print_desc(self):
         print("file_path: " + self.file_path)
-        print("season_info: " + self.season_info)
+        if self.season_info is not None:
+            print("season_info: " + self.season_info)
 
 class Torrent:
     identifier = None
