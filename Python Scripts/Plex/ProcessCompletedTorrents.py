@@ -181,6 +181,7 @@ for torrent in completed_torrents:
         else:
             destination = os.path.join(MEDIA_FOLDER, folder)
             destination = os.path.join(destination, torrent.name.replace(" ", ".") + "." + media_file.season_info + media_file.extension)
+            destination = destination.replace("..", ".")
 
         new_media = torrents.move_file(media_file.file_path, destination, args.dryrun)
 
