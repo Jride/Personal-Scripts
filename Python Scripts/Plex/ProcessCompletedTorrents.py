@@ -40,7 +40,7 @@ if args.mediaType == "kids_movie":
 
 TORRENT_MEDIA_FOLDER = os.path.join(TORRENT_MEDIA_FOLDER, torrentFolderName)
 
-MEDIA_FOLDER = os.path.join("hdd", "Media")
+MEDIA_FOLDER = os.path.join("/hdd", "Media")
 # "TV Shows"
 
 mediaFolderName = "TV_Shows"
