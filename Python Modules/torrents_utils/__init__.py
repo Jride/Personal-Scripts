@@ -155,7 +155,7 @@ def move_file(source, destination, dryrun):
     else:
         print("Move file to: " + destination)
         if dryrun is False:
-            os.rename(source, destination)
+            shutil.move(source, destination)
             return True
         else:
             return False
