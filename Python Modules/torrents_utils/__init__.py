@@ -136,7 +136,7 @@ def get_title(text, is_movie):
 
     title_search = re.split("(s\d\de\d\d)", text)
     if title_search is not None:
-        return title_search[0]
+        return title_search[0].strip()
     else:
         return None
 
