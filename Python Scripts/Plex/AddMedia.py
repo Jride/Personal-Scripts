@@ -48,4 +48,4 @@ else:
     input("\nCopy magenet URL to clipboard and press enter")
     magnet_link = pc.paste()
 
-run("-w ~/torrents/%s/ -a '%s'" % (folder_name, magnet_link))
+run("-w /hdd/torrents/%s/ -a '%s'" % (folder_name, magnet_link))

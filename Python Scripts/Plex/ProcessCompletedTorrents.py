@@ -25,8 +25,7 @@ parser.add_argument('--dryrun', help='Run the script to show what actions will h
 parser.add_argument('--skipcleanup', help='Skips deleting the torrent folder', action="store_true")
 args = parser.parse_args(sys.argv[1:])
 
-home = expanduser("~")
-TORRENT_MEDIA_FOLDER = os.path.join(home, "torrents")
+TORRENT_MEDIA_FOLDER = "/hdd/torrents"
 torrentFolderName = "tv_shows"
 
 if args.mediaType == "movie":

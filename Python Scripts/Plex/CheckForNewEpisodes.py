@@ -12,7 +12,7 @@ import itv_argparser
 import itv_filesystem
 
 def run(command):
-    itv_shell.run("transmission-remote --auth transmission:transmission -w ~/torrents/tv_shows %s" % (command))
+    itv_shell.run("transmission-remote --auth transmission:transmission -w /hdd/torrents/tv_shows %s" % (command))
 
 class Torrent:
     name = None
@@ -50,8 +50,7 @@ parser = itv_argparser.parser(
 args = parser.parse_args(sys.argv[1:])
 
 
-home = expanduser("~")
-download_show_cache = os.path.join(home, "torrents/.show_cache")
+download_show_cache = "/hdd/torrents/.show_cache"
 show_cache = []
 
 if itv_filesystem.does_file_exist(download_show_cache):

@@ -18,9 +18,7 @@ parser = itv_argparser.parser(
 )
 args = parser.parse_args(sys.argv[1:])
 
-home = expanduser("~")
-download_show_cache = os.path.join(home, "torrents/.show_cache")
-
+download_show_cache = "/hdd/torrents/.show_cache"
 notifications.send("My custom title", "Line one\nLine two")
 
 if itv_filesystem.does_file_exist(download_show_cache):
