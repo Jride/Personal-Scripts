@@ -140,6 +140,14 @@ def get_title(text, is_movie):
     else:
         return None
 
+def contains_episodic_info(text):
+    result = re.search("[-. ]?s[0-9]+e[0-9]+", text.lower())
+
+    if result:
+      return True
+    else:
+      return False
+
 def get_season_info(text):
 
     season_search = re.search("(s\d\de\d\d)", text)

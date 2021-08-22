@@ -128,6 +128,12 @@ for torrent in completed_torrents:
     found_media = []
     for file_path in media_files:
         if torrent.folder in file_path:
+
+            # If processing shows then skip any files that dont contain 
+            # season and episode info
+            if IS_MOVIE is False and torrents_utils.contains_episodic_info() is False:
+                continue
+
             # print(file_path)
             # print(torrent_folder)
             file_name_chunks = file_path.split("/")
