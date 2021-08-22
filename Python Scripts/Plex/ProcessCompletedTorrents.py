@@ -131,7 +131,7 @@ for torrent in completed_torrents:
 
             # If processing shows then skip any files that dont contain 
             # season and episode info
-            if IS_MOVIE is False and torrents_utils.contains_episodic_info() is False:
+            if IS_MOVIE is False and torrents_utils.contains_episodic_info(file_path) is False:
                 continue
 
             # print(file_path)
