@@ -1,8 +1,5 @@
 WORKING_DIR="$( dirname "${BASH_SOURCE[0]}")"
 
-alias sshplex='ssh plex@192.168.0.42 -p 8888'
-alias sshplex_remote='ssh plex@plex-server.myddns.me -p 8888'
-
 export PYTHON_SCRIPTS="$WORKING_DIR/Python Scripts"
 export PYTHON_MODULES="$WORKING_DIR/Python Modules"
 export PYTHON_CORE_MODULES="$WORKING_DIR/Python Core Modules"
