@@ -8,7 +8,7 @@ alias ip='ipconfig getifaddr en0'
 alias fixaudio='sudo launchctl stop com.apple.audio.coreaudiod && sudo launchctl start com.apple.audio.coreaudiod'
 alias sketchcrack='bash -c "$(curl -s https://raw.githubusercontent.com/duraki/SketchCrapp/master/sketchcrapp.sh -o -)" -O -m'
 
-alias sshplex='ssh plex@192.168.0.22 -p 8888'
+alias sshplex='ssh plex@192.168.1.181 -p 8888'
 alias sshplex_remote='ssh plex@plex-server.myddns.me -p 8888'
 
 alias gwip='git add -A; git rm "$(git ls-files --deleted)" 2> /dev/null; git commit --no-verify --no-gpg-sign -m "--wip-- [skip ci]"'
