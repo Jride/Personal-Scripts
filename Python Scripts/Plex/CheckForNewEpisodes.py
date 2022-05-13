@@ -22,7 +22,10 @@ class Torrent:
 
     @property
     def id(self):
-        return self.name + "-" + self.season_episode
+        if self.season_episode is None:
+            return self.name
+        else:
+            return self.name + "-" + self.season_episode
 
     def print_desc(self):
         print(self.name)
@@ -37,7 +40,10 @@ class Torrent:
             print("1080: True")
 
     def cache_name(self):
-        return self.name + " - " + self.season_episode + "\n"
+        if self.season_episode is None:
+            return self.name + "\n"
+        else:
+            return self.name + " - " + self.season_episode + "\n"
 
 ### --- MAIN --- ###
 
@@ -65,22 +71,24 @@ for item in o.rss.channel.item:
     title = item.title.cdata.lower().replace("'", "")
     link = item.link.cdata
     if link:
-        season_search = re.search("(s\d\de\d\d)", title)
-        title_search = re.split("(s\d\de\d\d)", title)
-
-        if season_search is None:
-            continue
-
         torrent = Torrent()
-        torrent.name = title_search[0].strip()
-        torrent.season_episode = season_search.group()
+
+        season_search = re.search("(s\d\de\d\d)", title)
+        if season_search is not None:
+            title_search = re.split("(s\d\de\d\d)", title)
+            torrent.name = title_search[0].strip()
+            torrent.season_episode = season_search.group()
 
         if "720p" in title:
+            title_search = title.split("720p")
             torrent.magnet_720 = link
         elif "1080p" in title:
+            title_search = title.split("1080p")
             torrent.magnet_1080 = link
         else:
             continue
+
+        torrent.name = title_search[0].strip()
 
         if torrent.id in torrents:
             if torrent.magnet_1080 is None:
