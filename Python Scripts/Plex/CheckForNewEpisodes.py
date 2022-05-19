@@ -65,6 +65,7 @@ if itv_filesystem.does_file_exist(download_show_cache):
     # print(show_cache)
 
 url = 'http://showrss.info/user/255222.rss?magnets=true&namespaces=true&name=null&quality=null&re=null'
+
 o = untangle.parse(url)
 torrents = {}
 for item in o.rss.channel.item:
@@ -80,11 +81,13 @@ for item in o.rss.channel.item:
             torrent.season_episode = season_search.group()
 
         if "720p" in title:
-            title_search = title.split("720p")
             torrent.magnet_720 = link
+            if season_search is None:
+                title_search = title.split("720p")
         elif "1080p" in title:
-            title_search = title.split("1080p")
             torrent.magnet_1080 = link
+            if season_search is None:
+                title_search = title.split("1080p")
         else:
             continue
 

@@ -129,11 +129,6 @@ for torrent in completed_torrents:
     for file_path in media_files:
         if torrent.folder in file_path:
 
-            # If processing shows then skip any files that dont contain 
-            # season and episode info
-            if IS_MOVIE is False and torrents_utils.contains_episodic_info(file_path) is False:
-                continue
-
             # print(file_path)
             # print(torrent_folder)
             file_name_chunks = file_path.split("/")
@@ -141,17 +136,14 @@ for torrent in completed_torrents:
 
             # print(file_name)
             torrent_name = torrents_utils.get_title(file_name.lower(), IS_MOVIE)
-            if torrent_name is not None:
-                torrent.name = torrent_name
 
-            if IS_MOVIE:
-                media = torrents_utils.Media(file_path, file_name)
-                found_media.append(media)
-            else:
+            media = torrents_utils.Media(file_path, file_name)
+            if IS_MOVIE is False:
                 season_info = torrents_utils.get_season_info(file_name.lower())
                 if season_info is not None:
                     media = torrents_utils.Media(file_path, file_name, season_info)
-                    found_media.append(media)
+
+            found_media.append(media)
 
     torrent.media_list = found_media
 
@@ -180,12 +172,16 @@ for torrent in completed_torrents:
     new_media = False
     for media_file in torrent.media(args.mediaType):
 
-        if IS_MOVIE:
-            destination = os.path.join(MEDIA_FOLDER, media_file.file_name)
-        else:
+        if media_file.season_info is not None:
             destination = os.path.join(MEDIA_FOLDER, folder)
             destination = os.path.join(destination, torrent.name.replace(" ", ".") + "." + media_file.season_info + media_file.extension)
             destination = destination.replace("..", ".")
+        else:
+            if IS_MOVIE is False:
+                destination = os.path.join(MEDIA_FOLDER, folder)
+                destination = os.path.join(destination, media_file.file_name)
+            else:
+                destination = os.path.join(MEDIA_FOLDER, media_file.file_name)
 
         new_media = torrents_utils.move_file(media_file.file_path, destination, args.dryrun)
 

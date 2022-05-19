@@ -117,8 +117,12 @@ def existing_shows_folders(media_folder):
 
 def find_existing_folder_for_show(folders, show):
     for key in folders.keys():
-        if show in folders[key]:
-            return key
+        if "eastenders" in show:
+            if "eastenders" in folders[key]:
+                return key
+        else:
+            if show in folders[key]:
+                return key
 
     return None
 
@@ -138,7 +142,7 @@ def get_title(text, is_movie):
     if title_search is not None:
         return title_search[0].strip()
     else:
-        return None
+        return text
 
 def contains_episodic_info(text):
     result = re.search("[-. ]?s[0-9]+e[0-9]+", text.lower())
@@ -147,6 +151,11 @@ def contains_episodic_info(text):
       return True
     else:
       return False
+
+def is_long_running_show(text):
+    shows = ["eastenders"]
+    return any(show in text.lower() for show in shows)
+
 
 def get_season_info(text):
 
