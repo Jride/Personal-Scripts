@@ -1,3 +1,4 @@
 alias gitdelmerged='python3 "$PYTHON_SCRIPTS/Git/DeleteMergedBranches.py"'
 alias gittag='python3 "$PYTHON_SCRIPTS/Git/CreateTagAndPush.py"'
 alias updatescripts='python3 "$PYTHON_SCRIPTS/Git/UpdateScripts.py"'
+alias bumpci='python3 "$PYTHON_SCRIPTS/Git/BumpCI.py"'
