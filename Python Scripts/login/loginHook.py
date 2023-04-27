@@ -49,9 +49,6 @@ def update_gem_dependency_if_needed(gem_to_update):
 # Setup the Mac Defaults
 mac_utils.setup_defaults()
 
-# Update Podspec ENV variables
-cocoapods.generate_pod_aliases()
-
 # Clone / Update the scripts
 script_utils.update_scripts()
 
