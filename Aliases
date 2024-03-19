@@ -1,4 +1,4 @@
-WORKING_DIR="$( dirname "${BASH_SOURCE[0]}")"
+WORKING_DIR="$( dirname "${(%):-%x}")"
 
 export PYTHON_SCRIPTS="$WORKING_DIR/Python Scripts"
 export PYTHON_MODULES="$WORKING_DIR/Python Modules"
@@ -14,9 +14,3 @@ do
 done
 
 eval "$(find "$PYTHON_SCRIPTS" -name "alias" | while read af; do echo "source '$af'"; done)"
-
-# Load BASH IT terminal customisation
-source "$WORKING_DIR/.bash_it/load_bash_it"
-
-# Pod project aliases
-source ~/.podAliases/PodAliases

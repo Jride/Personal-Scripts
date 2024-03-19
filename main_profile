@@ -25,7 +25,7 @@ export PATH="/usr/local/opt/php@7.3/bin:$PATH"
 
 # Load our custom profiles for ITV team scripts and personal scripts
 source "$SCRIPTS/Aliases"
-source "$ITV_SCRIPTS/Aliases"
+source "$ITV_SCRIPTS/Aliases_Zsh"
 
 eval "$(/opt/homebrew/bin/brew shellenv)"
 eval "$(rbenv init - bash)"
