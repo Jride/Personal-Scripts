@@ -1,5 +1,5 @@
 alias usedevscripts='source "$DEV_SCRIPTS/Aliases"; source "$ITV_DEV_SCRIPTS/Aliases_Zsh"; export USING_DEV_SCRIPTS="(dev) "'
-alias uselivescripts='source "$SCRIPTS/Aliases"; source "$ITV_SCRIPTS/Aliases"; export USING_DEV_SCRIPTS=""'
+alias uselivescripts='source "$SCRIPTS/Aliases"; source "$ITV_SCRIPTS/Aliases_Zsh"; export USING_DEV_SCRIPTS=""'
 
 alias editscripts='edit "$DEV_SCRIPTS" && cd "$DEV_SCRIPTS"'
 alias edititvscripts='edit "$ITV_DEV_SCRIPTS" && cd "$ITV_DEV_SCRIPTS"'
