@@ -59,9 +59,6 @@ itv_shell.run("brew update")
 
 update_brew_binary_if_needed("rbenv")
 update_brew_binary_if_needed("swiftlint")
-update_brew_binary_if_needed("carthage")
-update_brew_binary_if_needed("git")
-update_brew_binary_if_needed("git-lfs")
 
 # Update Gem Libraries
 outdated_gems_result = itv_shell.result("gem outdated")
@@ -71,10 +68,6 @@ for gem in outdated_gems_list:
     outdated_gems.append(split_gem[0])
 
 update_gem_dependency_if_needed("fastlane")
-update_gem_dependency_if_needed("cocoapods")
-update_gem_dependency_if_needed("cocoapods-rome")
-
-itv_shell.run("pod repo update")
 
 # If any new updates store the output to disk and send via email
 if new_updates:
