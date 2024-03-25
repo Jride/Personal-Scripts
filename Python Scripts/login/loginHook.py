@@ -10,7 +10,6 @@ sys.path.append(os.path.expandvars('$PYTHON_MODULES'))
 import itv_shell
 import itv_argparser
 import itv_filesystem
-import cocoapods
 import mac_utils
 import script_utils
 
