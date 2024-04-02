@@ -49,6 +49,6 @@ export BASH_SILENCE_DEPRECATION_WARNING=1
 
 export APPLE_ID="josh.rideout@candyspace.com"
 
-ZSH_THEME=bira
+export ZSH_THEME="bira"
 
 source "$SCRIPTS/oh-my-zsh"
