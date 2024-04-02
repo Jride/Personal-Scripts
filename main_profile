@@ -1,6 +1,6 @@
-# This is the main profile. Create a ~/.bash_profile file and add the following:
+# This is the main profile. Create a ~/.zshrc file and add the following:
 
-# Content of ~/.bash_profile
+# Content of ~/.zshrc
 
 # export SCRIPTS="/Users/joshrideout/.scripts/josh"
 # export ITV_SCRIPTS="/Users/joshrideout/.scripts/itv"
@@ -48,3 +48,7 @@ export MATCH_KEYCHAIN_PASSWORD="q8JEqsJqBLvDXgCu"
 export BASH_SILENCE_DEPRECATION_WARNING=1
 
 export APPLE_ID="josh.rideout@candyspace.com"
+
+ZSH_THEME=bira
+
+source "$SCRIPTS/oh-my-zsh"
