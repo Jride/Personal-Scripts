@@ -17,4 +17,4 @@ Deletes all local branches that have been merged into the current branch
 )
 args = parser.parse_args(sys.argv[1:])
 
-itv_shell.run('git branch --merged | egrep -v "(^\*|master|dev)" | xargs git branch -d')
+itv_shell.run(r'git branch --merged | egrep -v "(^\*|master|dev)" | xargs git branch -d')

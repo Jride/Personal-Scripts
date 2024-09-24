@@ -138,7 +138,7 @@ def get_title(text, is_movie):
     if is_movie is True:
         return text
 
-    title_search = re.split("(s\d\de\d\d)", text)
+    title_search = re.split(r"(s\d\de\d\d)", text)
     if title_search is not None:
         return title_search[0].strip()
     else:
@@ -159,7 +159,7 @@ def is_long_running_show(text):
 
 def get_season_info(text):
 
-    season_search = re.search("(s\d\de\d\d)", text)
+    season_search = re.search(r"(s\d\de\d\d)", text)
     if season_search is not None:
         return season_search.group()
     else:

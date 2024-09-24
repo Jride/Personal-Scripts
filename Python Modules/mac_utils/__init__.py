@@ -32,4 +32,4 @@ def setup_defaults():
     itv_shell.run("cp /Applications/SourceTree.app/Contents/Resources/stree /usr/local/bin")
 
     # Install the sublime binary
-    itv_shell.run("ln -s /Applications/Sublime\ Text.app/Contents/SharedSupport/bin/subl /usr/local/bin/subl")
+    itv_shell.run(r"ln -s /Applications/Sublime\ Text.app/Contents/SharedSupport/bin/subl /usr/local/bin/subl")

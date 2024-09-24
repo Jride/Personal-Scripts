@@ -74,9 +74,9 @@ for item in o.rss.channel.item:
     if link:
         torrent = Torrent()
 
-        season_search = re.search("(s\d\de\d\d)", title)
+        season_search = re.search(r"(s\d\de\d\d)", title)
         if season_search is not None:
-            title_search = re.split("(s\d\de\d\d)", title)
+            title_search = re.split(r"(s\d\de\d\d)", title)
             torrent.name = title_search[0].strip()
             torrent.season_episode = season_search.group()
 
