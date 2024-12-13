@@ -131,18 +131,9 @@ def torrent_folders(torrent_media_folder):
     result = itv_shell.result("cd '%s' && ls -d */ | cut -f1 -d'/'" % torrent_media_folder)
     return result.splitlines()
 
-def get_title(text, is_movie):
-
+def get_title(text):
     text = text.replace('-', '').replace('.', ' ').replace('+', ' ').replace('!', '').strip()
-
-    if is_movie is True:
-        return text
-
-    title_search = re.split(r"(s\d\de\d\d)", text)
-    if title_search is not None:
-        return title_search[0].strip()
-    else:
-        return text
+    return text
 
 def contains_episodic_info(text):
     result = re.search("[-. ]?s[0-9]+e[0-9]+", text.lower())

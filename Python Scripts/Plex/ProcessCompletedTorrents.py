@@ -42,7 +42,7 @@ TORRENT_MEDIA_FOLDER = os.path.join(TORRENT_MEDIA_FOLDER, torrentFolderName)
 MEDIA_FOLDER = os.path.join("/hdd", "Media")
 # "TV Shows"
 
-mediaFolderName = "TV_Shows"
+mediaFolderName = "TV_Shows/unsorted"
 
 if args.mediaType == "movie":
     mediaFolderName = "Movies"
@@ -88,7 +88,7 @@ for index, line in enumerate(lines):
         torrent.print_desc()
 
     folder = torrent.folder.lower()
-    torrent.name = torrents_utils.get_title(folder, IS_MOVIE)
+    torrent.name = torrents_utils.get_title(folder)
 
     # Only add the completed ones
     if torrent.is_done:
@@ -109,7 +109,7 @@ for torrent_folder in all_torrents:
     )
 
     folder = torrent_folder.lower()
-    torrent.name = torrents_utils.get_title(folder, IS_MOVIE)
+    torrent.name = torrents_utils.get_title(folder)
     completed_torrents.append(torrent)
 
 # Get all media files from torrents folder
@@ -135,14 +135,7 @@ for torrent in completed_torrents:
             file_name = file_name_chunks[-1]
 
             # print(file_name)
-            torrent_name = torrents_utils.get_title(file_name.lower(), IS_MOVIE)
-
             media = torrents_utils.Media(file_path, file_name)
-            if IS_MOVIE is False:
-                season_info = torrents_utils.get_season_info(file_name.lower())
-                if season_info is not None:
-                    media = torrents_utils.Media(file_path, file_name, season_info)
-
             found_media.append(media)
 
     torrent.media_list = found_media
@@ -157,32 +150,13 @@ for torrent in completed_torrents:
         print("No media for torrent")
         continue
 
-    if IS_MOVIE is False:
-        existing_folders = torrents_utils.existing_shows_folders(MEDIA_FOLDER)
-        folder = torrents_utils.find_existing_folder_for_show(existing_folders, torrent.name)
-        if folder is None:
-            new_folder = os.path.join(MEDIA_FOLDER, torrent.name)
-            torrents_utils.create_folder(new_folder, args.dryrun)
-            existing_folders[torrent.name] = [torrent.name]
-            folder = torrent.name
-
     if torrent.identifier is not None:
         torrents_utils.remove_torrent(torrent.identifier, args.dryrun)
 
     new_media = False
     for media_file in torrent.media(args.mediaType):
 
-        if media_file.season_info is not None:
-            destination = os.path.join(MEDIA_FOLDER, folder)
-            destination = os.path.join(destination, torrent.name.replace(" ", ".") + "." + media_file.season_info + media_file.extension)
-            destination = destination.replace("..", ".")
-        else:
-            if IS_MOVIE is False:
-                destination = os.path.join(MEDIA_FOLDER, folder)
-                destination = os.path.join(destination, media_file.file_name)
-            else:
-                destination = os.path.join(MEDIA_FOLDER, media_file.file_name)
-
+        destination = os.path.join(MEDIA_FOLDER, media_file.file_name)
         new_media = torrents_utils.move_file(media_file.file_path, destination, args.dryrun)
 
     if new_media:
